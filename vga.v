@@ -90,7 +90,15 @@ module vga(
   always @(negedge hblank) 
     y <= vblank ? 0 : y + 1;
 
+  reg [2:0] color = 3'b0;
   assign {o_red, o_grn, o_blu} = color;
+
+  img_generator ig(
+    .CLOCK_25(CLOCK_25),
+    .x(x),
+    .y(y),
+    .color(color)
+  );
 
 endmodule 
 

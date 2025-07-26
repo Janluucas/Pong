@@ -5,9 +5,9 @@ module ball_clock (
 );
     reg[9:0] cnt = 10'b0;
 
-    assign BALL_CLOCK = reg[9];
+    assign BALL_CLOCK = cnt[9];
 
-    always @(*) begin
+    always @(posedge CLOCK_25) begin
         cnt <= cnt + 1'b1;
     end
 endmodule
