@@ -15,10 +15,10 @@
 
 `define DEFAULT_PLAYER_SPEED 30
 
-`define INITIAL_BALL_DIRECTION = 0
+`define INITIAL_BALL_DIRECTION 0
 
-`define COLLISION_OFFSET = 3
-`define BALL_CENTER_OFFSET = 5
+`define COLLISION_OFFSET 3
+`define BALL_CENTER_OFFSET 5
 
 `define HIT_ZONE_1    4
 `define HIT_ZONE_2   15
@@ -108,10 +108,9 @@ module img_generator (
             0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
             1: ball_y_pos <= ball_y_pos - current_ball_y_movement;
         endcase
-        ball_x_pos <= ball_x_pos + 4;
 
         // Ball Collision on Y-Axis
-        if (0 <= ball_y_pos && ball_y_pos <= `COLLISION_OFFSET) begin
+        if ((ball_y_pos >= 0) && (ball_y_pos <= `COLLISION_OFFSET)) begin
             ball_direction_top <= 0;
         end else if ((`FRAME_HEIGHT - `COLLISION_OFFSET) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= `FRAME_HEIGHT) begin
             ball_direction_top <= 1;
