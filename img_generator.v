@@ -129,7 +129,7 @@ module img_generator (
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
                 end else begin
-                    // MISS
+                    // MISS => Player 2 scores
 
                 end
 
@@ -143,7 +143,7 @@ module img_generator (
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
                 end else begin
-                    // MISS
+                    // MISS => Player 2 scores
                 end
 
             end else if (
@@ -211,7 +211,7 @@ module img_generator (
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
                 end else begin
-                    // MISS
+                    // MISS => Player 1 scores
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_2_y_pos + `PLAYER_HEIGHT)) begin
@@ -224,7 +224,7 @@ module img_generator (
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
                 end else begin
-                    // MISS
+                    // MISS => Player 1 scores
                 end
 
             end else if (
