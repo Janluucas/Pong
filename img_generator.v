@@ -10,12 +10,22 @@
 `define INITIAL_BALL_Y_POS 238
 `define INITIAL_PLAYER_Y_POS 210
 
-`define PLAYER_1_X_POS 25
+`define PLAYER_1_X_POS 13
 `define PLAYER_2_X_POS 615
 
 `define DEFAULT_PLAYER_SPEED 30
 
 `define INITIAL_BALL_DIRECTION = 0
+
+`define COLLISION_OFFSET = 3
+`define BALL_CENTER_OFFSET = 5
+
+`define HIT_ZONE_1    0
+`define HIT_ZONE_2   11
+`define HIT_ZONE_3   21
+`define HIT_ZONE_4   31
+`define HIT_ZONE_5   41
+`define HIT_ZONE_MAX 52
 
 module img_generator (
     input wire CLOCK_25,
@@ -67,6 +77,168 @@ module img_generator (
             0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
             1: ball_y_pos <= ball_y_pos - current_ball_y_movement;
         endcase
+        ball_x_pos <= ball_x_pos + 4;
+
+        // Ball Collision on Y-Axis
+        if (0 <= ball_y_pos && ball_y_pos <= `COLLISION_OFFSET) begin
+            ball_direction_top <= 0;
+        end else if ((`FRAME_HEIGHT - `COLLISION_OFFSET) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= `FRAME_HEIGHT) begin
+            ball_direction_top <= 1;
+        end
+
+        // Ball Collision on X_Axis
+        if ((`PLAYER_1_X_POS + `PLAYER_WIDTH) <= ball_x_pos && ball_x_pos <= (`PLAYER_1_X_POS + `PLAYER_WIDTH + `COLLISION_OFFSET)) begin
+            // ball is on x level of player 1
+            if ((ball_y_pos + `BALL_CENTER_OFFSET) < player_1_y_pos) begin
+                // center pixel of ball is above player; corner hit still possible
+                if ((player_1_y_pos - 1) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= player_1_y_pos + `HIT_ZONE_2) begin
+                    // Hit at top corner of player
+                    ball_direction_left <= 0;
+                    ball_direction_top  <= 1;
+
+                    current_ball_x_movement <= 1;
+                    current_ball_y_movement <= 3;
+                end
+
+            end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_1_y_pos + `PLAYER_HEIGHT)) begin
+                // center pixel of ball is below player; corner hit still possible
+                if ((player_1_y_pos + `HIT_ZONE_5) <= ball_y_pos && ball_y_pos <= (player_1_y_pos + `PLAYER_HEIGHT + 1)) begin
+                    // Hit at bottom corner of player
+                    ball_direction_left <= 0;
+                    ball_direction_top  <= 0;
+
+                    current_ball_x_movement <= 1;
+                    current_ball_y_movement <= 3;
+                end
+
+            end else if (
+                `HIT_ZONE_1 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) <= (`HIT_ZONE_2 - 1)
+            ) begin
+                // Hit in ZONE 1
+                ball_direction_left <= 0;
+                ball_direction_top  <= 1;
+
+                current_ball_x_movement <= 2;
+                current_ball_y_movement <= 2;
+            end else if (
+                `HIT_ZONE_2 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) <= (`HIT_ZONE_3 - 1)
+            ) begin
+                // Hit in ZONE 2
+                ball_direction_left <= 0;
+                ball_direction_top  <= 1;
+
+                current_ball_x_movement <= 3;
+                current_ball_y_movement <= 1;
+            end else if (
+                `HIT_ZONE_3 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) <= (`HIT_ZONE_4 - 1)
+            ) begin
+                // Hit in ZONE 3
+                ball_direction_left <= 0;
+
+                current_ball_x_movement <= 4;
+                current_ball_y_movement <= 0;
+            end else if (
+                `HIT_ZONE_4 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) <= (`HIT_ZONE_5 - 1)
+            ) begin
+                // Hit in ZONE 4
+                ball_direction_left <= 0;
+                ball_direction_top  <= 0;
+
+                current_ball_x_movement <= 3;
+                current_ball_y_movement <= 1;
+            end else if (
+                `HIT_ZONE_5 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_1_y_pos) <= (`HIT_ZONE_MAX - 1)
+            ) begin
+                // Hit in ZONE 5
+                ball_direction_left <= 0;
+                ball_direction_top  <= 0;
+
+                current_ball_x_movement <= 2;
+                current_ball_y_movement <= 2;
+            end
+
+
+
+        end else if ((`PLAYER_2_X_POS - `COLLISION_OFFSET) <= (ball_x_pos + `BALL_RADIUS) && (ball_x_pos + `BALL_RADIUS) <= `PLAYER_2_X_POS) begin
+            // ball is on x level of player 2
+            if ((ball_y_pos + `BALL_CENTER_OFFSET) < player_2_y_pos) begin
+                // center pixel of ball is above player; corner hit still possible
+                if ((player_2_y_pos - 1) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= player_2_y_pos + `HIT_ZONE_2) begin
+                    // Hit at top corner of player
+                    ball_direction_left <= 1;
+                    ball_direction_top  <= 1;
+
+                    current_ball_x_movement <= 1;
+                    current_ball_y_movement <= 3;
+                end
+
+            end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_2_y_pos + `PLAYER_HEIGHT)) begin
+                // center pixel of ball is below player; corner hit still possible
+                if ((player_2_y_pos + `HIT_ZONE_5) <= ball_y_pos && ball_y_pos <= (player_2_y_pos + `PLAYER_HEIGHT + 1)) begin
+                    // Hit at bottom corner of player
+                    ball_direction_left <= 1;
+                    ball_direction_top  <= 0;
+
+                    current_ball_x_movement <= 1;
+                    current_ball_y_movement <= 3;
+                end
+
+            end else if (
+                `HIT_ZONE_1 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) <= (`HIT_ZONE_2 - 1)
+            ) begin
+                // Hit in ZONE 1
+                ball_direction_left <= 1;
+                ball_direction_top  <= 1;
+
+                current_ball_x_movement <= 2;
+                current_ball_y_movement <= 2;
+            end else if (
+                `HIT_ZONE_2 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) <= (`HIT_ZONE_3 - 1)
+            ) begin
+                // Hit in ZONE 2
+                ball_direction_left <= 1;
+                ball_direction_top  <= 1;
+
+                current_ball_x_movement <= 3;
+                current_ball_y_movement <= 1;
+            end else if (
+                `HIT_ZONE_3 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) <= (`HIT_ZONE_4 - 1)
+            ) begin
+                // Hit in ZONE 3
+                ball_direction_left <= 1;
+
+                current_ball_x_movement <= 4;
+                current_ball_y_movement <= 0;
+            end else if (
+                `HIT_ZONE_4 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) <= (`HIT_ZONE_5 - 1)
+            ) begin
+                // Hit in ZONE 4
+                ball_direction_left <= 1;
+                ball_direction_top  <= 0;
+
+                current_ball_x_movement <= 3;
+                current_ball_y_movement <= 1;
+            end else if (
+                `HIT_ZONE_5 <= ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) &&
+                ((ball_y_pos + `BALL_CENTER_OFFSET) - player_2_y_pos) <= (`HIT_ZONE_MAX - 1)
+            ) begin
+                // Hit in ZONE 5
+                ball_direction_left <= 1;
+                ball_direction_top  <= 0;
+
+                current_ball_x_movement <= 2;
+                current_ball_y_movement <= 2;
+            end
+        end
     end
     
 endmodule

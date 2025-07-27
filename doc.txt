@@ -1,21 +1,24 @@
 Directions:
 
-x + 6
+x + 4
 y + 0
 
-x + 5
+x + 3
 y + 1
 
-x + 4
+x + 2
 y + 2
 
-x + 3
+special corner case:
+x + 1
 y + 3
 
-special lower corner:
-x + 2
-y + 4
 
-special upper corner:
-x + 2
-y - 4
+
+Zones:
+
+ 0 - 10		ZONE 1
+11 - 20		ZONE 2
+21 - 30		ZONE 3
+31 - 40		ZONE 4
+41 - 52		ZONE 5
