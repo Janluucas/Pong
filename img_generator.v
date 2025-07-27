@@ -51,7 +51,7 @@ module img_generator (
         // Draw Player 2
         x >= `PLAYER_2_X_POS && x <= (`PLAYER_2_X_POS + `PLAYER_WIDTH) &&
         y >= player_2_y_pos && y <= (player_2_y_pos + `PLAYER_HEIGHT)
-    ) ? 3'b100 : 3'b000 | 3*{(x == 640 || x == 1 || y == 480 || y == 1) ? 1'b1 : 1'b0};
+    ) ? 3'b100 : 3'b000 | 3*{(x == 640 || x == 1 || y == 480 || y == 1) ? 3'b010 : 3'b000};
 
     reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
