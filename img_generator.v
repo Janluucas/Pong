@@ -36,8 +36,8 @@ module img_generator (
     reg ball_direction_top  = 0;
     reg ball_direction_left = 0;
 
-    reg current_ball_x_movement = 6;
-    reg current_ball_y_movement = 0;
+    reg[2:0] current_ball_x_movement = 4;
+    reg[2:0] current_ball_y_movement = 0;
 
     assign color = (
         // Draw Ball
@@ -58,7 +58,15 @@ module img_generator (
 
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
-        ball_x_pos <= ball_x_pos + 6;
+        case (ball_direction_left)
+            0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
+            1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
+        endcase
+
+        case (ball_direction_top)
+            0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
+            1: ball_y_pos <= ball_y_pos - current_ball_y_movement;
+        endcase
     end
     
 endmodule
