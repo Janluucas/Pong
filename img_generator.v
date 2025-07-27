@@ -11,12 +11,42 @@ module img_generator (
     input wire player_2_b,
     input wire player_2_switch,
 
-    output wire[2:0] color
+    // FPGA buttons (TODO: suspected to be active low)
+    input wire key0,
+    input wire key1,
+
+    output wire[2:0] color,
+    // FPGA led
+    output wire[7:0] led
 );
     reg BALL_CLOCK;
+    reg[7:0] led_r;
+    assign led = led_r;
     ball_clock ballzzz(
         .CLOCK_25(CLOCK_25),
-        .BALL_CLOCK(BALL_CLOCK)
+        .BALL_CLOCK(BALL_CLOCK),
+        .led(led_r)
+    );
+
+    reg pause_active_low = 0;   // yes, by default the game is supposed to be paused
+
+    always @(posedge BALL_CLOCK) begin
+        // key1 == continue
+        if (key1 == 0) begin
+            pause_active_low <= 1;
+
+        // key0 == pause
+        end else if (key0 == 0) begin
+            pause_active_low <= 0
+        end
+    end
+
+    reg[1:0] mode;
+    // Animations on FPGA LEDs
+    animation a0(
+        .BALL_CLOCK(BALL_CLOCK),
+        .mode(mode),
+        .
     );
 
     reg player_1_up = 0;
@@ -49,35 +79,37 @@ module img_generator (
 
     // Player Logic
     always @(posedge CLOCK_25) begin
-        // Player 1 Movement Logic
-        if (player_1_up) begin
-            if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
-                player_1_y_pos <= 1;
-            end else begin
-                player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
+        if (pause_active_low == 0) begin
+            // Player 1 Movement Logic
+            if (player_1_up) begin
+                if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
+                    player_1_y_pos <= 1;
+                end else begin
+                    player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
+                end
             end
-        end
-        if (player_1_down) begin
-            if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin
-                player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
-            end else begin
-                player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
+            if (player_1_down) begin
+                if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin
+                    player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
+                end else begin
+                    player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
+                end
             end
-        end
 
-        // Player 2 Movement Logic
-        if (player_2_up) begin
-            if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin
-                player_2_y_pos <= 1;
-            end else begin
-                player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
+            // Player 2 Movement Logic
+            if (player_2_up) begin
+                if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin
+                    player_2_y_pos <= 1;
+                end else begin
+                    player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
+                end
             end
-        end
-        if (player_2_down) begin
-            if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin
-                player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
-            end else begin
-                player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
+            if (player_2_down) begin
+                if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin
+                    player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
+                end else begin
+                    player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
+                end
             end
         end
     end
@@ -116,15 +148,17 @@ module img_generator (
 
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
-        case (ball_direction_left)
-            0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
-            1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
-        endcase
+        if (pause_active_low == 0) begin
+            case (ball_direction_left)
+                0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
+                1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
+            endcase
 
-        case (ball_direction_top)
-            0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
-            1: ball_y_pos <= ball_y_pos - current_ball_y_movement;
-        endcase
+            case (ball_direction_top)
+                0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
+                1: ball_y_pos <= ball_y_pos - current_ball_y_movement;
+            endcase
+        end
 
         // Ball Collision on Y-Axis
         if ((ball_y_pos >= 0) && (ball_y_pos <= `COLLISION_OFFSET)) begin
