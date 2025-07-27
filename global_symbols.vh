@@ -1,0 +1,28 @@
+`define BALL_RADIUS 9
+
+`define PLAYER_HEIGHT 60
+`define PLAYER_WIDTH 12
+
+`define FRAME_WIDTH 640
+`define FRAME_HEIGHT 480
+
+`define INITIAL_BALL_X_POS 318
+`define INITIAL_BALL_Y_POS 238
+`define INITIAL_PLAYER_Y_POS 210
+
+`define PLAYER_1_X_POS 13
+`define PLAYER_2_X_POS 615
+
+`define DEFAULT_PLAYER_SPEED 30
+
+`define INITIAL_BALL_DIRECTION 0
+
+`define COLLISION_OFFSET 3
+`define BALL_CENTER_OFFSET 5
+
+`define HIT_ZONE_1    0
+`define HIT_ZONE_2   11
+`define HIT_ZONE_3   23
+`define HIT_ZONE_4   35
+`define HIT_ZONE_5   47
+`define HIT_ZONE_MAX 59
