@@ -101,4 +101,3 @@ module vga(
   );
 
 endmodule 
-
