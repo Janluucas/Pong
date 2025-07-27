@@ -46,11 +46,11 @@ module img_generator (
     ) ? 3'b111 : (
         // Draw Player 1
         x >= `PLAYER_1_X_POS && x <= (`PLAYER_1_X_POS + `PLAYER_WIDTH) &&
-        y >= `INITIAL_PLAYER_Y_POS && y <= (`INITIAL_PLAYER_Y_POS + `PLAYER_HEIGHT)
+        y >= player_1_y_pos && y <= (player_1_y_pos + `PLAYER_HEIGHT)
     ) ? 3'b001 : (
         // Draw Player 2
         x >= `PLAYER_2_X_POS && x <= (`PLAYER_2_X_POS + `PLAYER_WIDTH) &&
-        y >= `INITIAL_PLAYER_Y_POS && y <= (`INITIAL_PLAYER_Y_POS + `PLAYER_HEIGHT)
+        y >= player_2_y_pos && y <= (player_2_y_pos + `PLAYER_HEIGHT)
     ) ? 3'b100 : 3'b000;
 
     reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
