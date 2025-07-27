@@ -139,6 +139,8 @@ module img_generator (
     reg[3:0] score_player_2 = 0;
     reg[2:0] winner_color = 3'b000;
 
+    reg miss_indicator = 0;
+
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
         case (ball_direction_left)
@@ -158,6 +160,17 @@ module img_generator (
             ball_direction_top <= 1;
         end
 
+        if (miss_indicator) begin
+            if (
+                (1 <= ball_x_pos && ball_x_pos <= `BALL_RADIUS) ||
+                ((`FRAME_WIDTH - `BALL_RADIUS) <= ball_x_pos && ball_x_pos <= (`FRAME_WIDTH - 1))
+            ) begin
+                ball_x_pos <= `INITIAL_BALL_X_POS;
+                ball_y_pos <= `INITIAL_BALL_Y_POS;
+                miss_indicator <= 0;
+            end
+        end else begin
+
         // Ball Collision on X_Axis
         if ((`PLAYER_1_X_POS + `PLAYER_WIDTH) <= ball_x_pos && ball_x_pos <= (`PLAYER_1_X_POS + `PLAYER_WIDTH + `COLLISION_OFFSET)) begin
             // ball is on x level of player 1
@@ -172,9 +185,8 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 2 scores
-                    ball_x_pos <= `INITIAL_BALL_X_POS;
-                    ball_y_pos <= `INITIAL_BALL_Y_POS;
                     score_player_2 <= score_player_2 + 1;
+                    miss_indicator <= 1;
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_1_y_pos + `PLAYER_HEIGHT)) begin
@@ -188,9 +200,8 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 2 scores
-                    ball_x_pos <= `INITIAL_BALL_X_POS;
-                    ball_y_pos <= `INITIAL_BALL_Y_POS;
                     score_player_2 <= score_player_2 + 1;
+                    miss_indicator <= 1;
                 end
 
             end else if (
@@ -259,9 +270,8 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 1 scores
-                    ball_x_pos <= `INITIAL_BALL_X_POS;
-                    ball_y_pos <= `INITIAL_BALL_Y_POS;
                     score_player_1 <= score_player_1 + 1;
+                    miss_indicator <= 1;
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_2_y_pos + `PLAYER_HEIGHT)) begin
@@ -275,9 +285,8 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 1 scores
-                    ball_x_pos <= `INITIAL_BALL_X_POS;
-                    ball_y_pos <= `INITIAL_BALL_Y_POS;
                     score_player_1 <= score_player_1 + 1;
+                    miss_indicator <= 1;
                 end
 
             end else if (
@@ -330,6 +339,8 @@ module img_generator (
                 current_ball_x_movement <= 2;
                 current_ball_y_movement <= 2;
             end
+        end
+
         end
     end
     
