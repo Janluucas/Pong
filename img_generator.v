@@ -111,6 +111,7 @@ module img_generator (
 
     reg[3:0] score_player_1 = 0;
     reg[3:0] score_player_2 = 0;
+    reg[2:0] winner_color = 3'b000;
 
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
@@ -145,7 +146,9 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 2 scores
-
+                    ball_x_pos <= `INITIAL_BALL_X_POS;
+                    ball_y_pos <= `INITIAL_BALL_Y_POS;
+                    score_player_2 <= score_player_2 + 1;
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_1_y_pos + `PLAYER_HEIGHT)) begin
@@ -159,6 +162,9 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 2 scores
+                    ball_x_pos <= `INITIAL_BALL_X_POS;
+                    ball_y_pos <= `INITIAL_BALL_Y_POS;
+                    score_player_2 <= score_player_2 + 1;
                 end
 
             end else if (
@@ -227,6 +233,9 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 1 scores
+                    ball_x_pos <= `INITIAL_BALL_X_POS;
+                    ball_y_pos <= `INITIAL_BALL_Y_POS;
+                    score_player_1 <= score_player_1 + 1;
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_2_y_pos + `PLAYER_HEIGHT)) begin
@@ -240,6 +249,9 @@ module img_generator (
                     current_ball_y_movement <= 3;
                 end else begin
                     // MISS => Player 1 scores
+                    ball_x_pos <= `INITIAL_BALL_X_POS;
+                    ball_y_pos <= `INITIAL_BALL_Y_POS;
+                    score_player_1 <= score_player_1 + 1;
                 end
 
             end else if (
