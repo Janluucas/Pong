@@ -51,7 +51,7 @@ module img_generator (
     reg player_2_up = 0;
     reg player_2_down = 0;
 
-    player_input player1_input(
+    rotary_encoder player1_input(
         .clk(CLOCK_25),
         .in_a(player_1_a),
         .in_b(player_1_b),
@@ -61,10 +61,10 @@ module img_generator (
         .button() // Not used
     );
 
-    player_input player2_input(
+    rotary_encoder player2_input(
         .clk(CLOCK_25),
-        .in_a(player_2_up),
-        .in_b(player_2_down),
+        .in_a(player_2_a),
+        .in_b(player_2_b),
         .switch(1'b0), // No switch input
         .up(player_2_up),
         .down(player_2_down),
