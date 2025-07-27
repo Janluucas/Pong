@@ -24,7 +24,7 @@ module img_generator (
 
     output wire[2:0] color
 );
-    wire BALL_CLOCK;
+    reg BALL_CLOCK;
     ball_clock ballzzz(
         .CLOCK_25(CLOCK_25),
         .BALL_CLOCK(BALL_CLOCK)
@@ -57,15 +57,8 @@ module img_generator (
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
 
     // Ball Logic
-    always @(*) begin
-        case (ball_direction_left)
-            0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
-            1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
-        endcase
-
-        case (ball_direction_top)
-            0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
-            1: ball_y_pos <= ball_y_pos - current_ball_y_movement; 
-        endcase
+    always@(posedge BALL_CLOCK) begin
+        ball_x_pos <= ball_x_pos + 6;
     end
+    
 endmodule
