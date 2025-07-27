@@ -21,10 +21,10 @@
 `define BALL_CENTER_OFFSET 5
 
 `define HIT_ZONE_1    0
-`define HIT_ZONE_2   15
+`define HIT_ZONE_2   13
 `define HIT_ZONE_3   25
 `define HIT_ZONE_4   35
-`define HIT_ZONE_5   45
+`define HIT_ZONE_5   47
 `define HIT_ZONE_MAX 60
 
 module img_generator (
