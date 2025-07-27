@@ -74,13 +74,39 @@ module img_generator (
         .button(button_player_2) // Not used
     );
 
+    // Player Logic
     always @(posedge CLOCK_25) begin
         // Player 1 Movement Logic
-        if (player_1_up) player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED;
-        if (player_1_down) player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
+        if (player_1_up) begin
+            if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
+                player_1_y_pos <= 1;
+            end else begin
+                player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
+            end
+        end
+        if (player_1_down) begin
+            if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin
+                player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
+            end else begin
+                player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
+            end
+        end
+
         // Player 2 Movement Logic
-        if (player_2_up) player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED;
-        if (player_2_down) player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
+        if (player_2_up) begin
+            if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin
+                player_2_y_pos <= 0;
+            end else begin
+                player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
+            end
+        end
+        if (player_2_down) begin
+            if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin
+                player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
+            end else begin
+                player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
+            end
+        end
     end
 
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
