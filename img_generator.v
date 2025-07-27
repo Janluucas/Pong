@@ -57,7 +57,7 @@ module img_generator (
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
 
     // Ball Logic
-    always @(posedge BALL_CLOCK) begin
+    always @(*) begin
         case (ball_direction_left)
             0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
             1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
