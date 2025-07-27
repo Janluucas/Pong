@@ -51,6 +51,9 @@ module img_generator (
     reg player_2_up = 0;
     reg player_2_down = 0;
 
+    reg button_player_1 = 0;
+    reg button_player_2 = 0;
+
     rotary_encoder player1_input(
         .clk(CLOCK_25),
         .in_a(player_1_a),
@@ -58,7 +61,7 @@ module img_generator (
         .switch(1'b0), // No switch input
         .up(player_1_up),
         .down(player_1_down),
-        .button() // Not used
+        .button(button_player_1) // Not used
     );
 
     rotary_encoder player2_input(
@@ -68,8 +71,17 @@ module img_generator (
         .switch(1'b0), // No switch input
         .up(player_2_up),
         .down(player_2_down),
-        .button() // Not used
+        .button(button_player_2) // Not used
     );
+
+    always @(posedge CLOCK_25) begin
+        // Player 1 Movement Logic
+        if (player_1_up) player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED;
+        if (player_1_down) player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
+        // Player 2 Movement Logic
+        if (player_2_up) player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED;
+        if (player_2_down) player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
+    end
 
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
     reg[11:0] ball_y_pos = `INITIAL_BALL_Y_POS;
@@ -278,15 +290,6 @@ module img_generator (
                 current_ball_y_movement <= 2;
             end
         end
-    end
-
-    always@(posedge CLOCK_25) begin
-        // Player 1 Movement Logic
-        if (player_1_up) player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED;
-        if (player_1_down) player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
-        // Player 2 Movement Logic
-        if (player_2_up) player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED;
-        if (player_2_down) player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
     end
     
 endmodule
