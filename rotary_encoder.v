@@ -17,31 +17,39 @@ module rotary_encoder (
     assign up = up_r;
     assign down = down_r;
 
+    reg signal_sent = 0;
+
     always @(posedge clk) begin
-        if (!a_up_first && !b_up_first) begin
-            if (in_a) begin
-                a_up_first <= 1;
-            end else if (in_b) begin
-                b_up_first <= 1;
+        if (!signal_sent) begin
+            if (!a_up_first && !b_up_first) begin
+                if (in_a) begin
+                    a_up_first <= 1;
+                end else if (in_b) begin
+                    b_up_first <= 1;
+                end
+                up_r <= 0;
+                down_r <= 0;
+            end else if (a_up_first) begin
+                if (in_b) begin
+                    up_r <= 1;
+                    a_up_first <= 0;
+                    b_up_first <= 0;
+                    signal_sent <= 1;
+                end
+            end else if (b_up_first) begin
+                if (in_a) begin
+                    down_r <= 1;
+                    a_up_first <= 0;
+                    b_up_first <= 0;
+                    signal_sent <= 1;
+                end
             end
+        end else begin
+            a_up_first <= 0;
+            b_up_first <= 0;
             up_r <= 0;
             down_r <= 0;
-        end else if (a_up_first) begin
-            if (in_b) begin
-                up_r <= 1;
-                a_up_first <= 0;
-                b_up_first <= 0;
-            end else begin
-                up_r <= 0;
-            end
-        end else if (b_up_first) begin
-            if (in_a) begin
-                down_r <= 1;
-                a_up_first <= 0;
-                b_up_first <= 0;
-            end else begin
-                down_r <= 0;
-            end
+            signal_sent <= 0;
         end
     end
 

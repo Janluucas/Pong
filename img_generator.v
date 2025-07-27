@@ -109,6 +109,9 @@ module img_generator (
     reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
 
+    reg[3:0] score_player_1 = 0;
+    reg[3:0] score_player_2 = 0;
+
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
         case (ball_direction_left)
