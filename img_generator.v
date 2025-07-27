@@ -31,6 +31,12 @@ module img_generator (
     input wire CLOCK_25,
     input wire[11:0] x, 
     input wire[11:0] y,
+    input wire player_1_a,
+    input wire player_1_b,
+    input wire player_1_switch,
+    input wire player_2_a,
+    input wire player_2_b,
+    input wire player_2_switch,
 
     output wire[2:0] color
 );
@@ -38,6 +44,31 @@ module img_generator (
     ball_clock ballzzz(
         .CLOCK_25(CLOCK_25),
         .BALL_CLOCK(BALL_CLOCK)
+    );
+
+    reg player_1_up = 0;
+    reg player_1_down = 0;
+    reg player_2_up = 0;
+    reg player_2_down = 0;
+
+    player_input player1_input(
+        .clk(CLOCK_25),
+        .in_a(player_1_a),
+        .in_b(player_1_b),
+        .switch(1'b0), // No switch input
+        .up(player_1_up),
+        .down(player_1_down),
+        .button() // Not used
+    );
+
+    player_input player2_input(
+        .clk(CLOCK_25),
+        .in_a(player_2_up),
+        .in_b(player_2_down),
+        .switch(1'b0), // No switch input
+        .up(player_2_up),
+        .down(player_2_down),
+        .button() // Not used
     );
 
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
@@ -239,6 +270,15 @@ module img_generator (
                 current_ball_y_movement <= 2;
             end
         end
+    end
+
+    always@(posedge CLOCK_25) begin
+        // Player 1 Movement Logic
+        if (player_1_up) player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED;
+        if (player_1_down) player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
+        // Player 2 Movement Logic
+        if (player_2_up) player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED;
+        if (player_2_down) player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
     end
     
 endmodule
