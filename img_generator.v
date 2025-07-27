@@ -20,12 +20,12 @@
 `define COLLISION_OFFSET = 3
 `define BALL_CENTER_OFFSET = 5
 
-`define HIT_ZONE_1    0
-`define HIT_ZONE_2   11
-`define HIT_ZONE_3   21
-`define HIT_ZONE_4   31
-`define HIT_ZONE_5   41
-`define HIT_ZONE_MAX 52
+`define HIT_ZONE_1    4
+`define HIT_ZONE_2   15
+`define HIT_ZONE_3   25
+`define HIT_ZONE_4   35
+`define HIT_ZONE_5   45
+`define HIT_ZONE_MAX 56
 
 module img_generator (
     input wire CLOCK_25,
@@ -129,6 +129,9 @@ module img_generator (
 
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
+                end else begin
+                    // MISS
+
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_1_y_pos + `PLAYER_HEIGHT)) begin
@@ -140,6 +143,8 @@ module img_generator (
 
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
+                end else begin
+                    // MISS
                 end
 
             end else if (
@@ -206,6 +211,8 @@ module img_generator (
 
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
+                end else begin
+                    // MISS
                 end
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_2_y_pos + `PLAYER_HEIGHT)) begin
@@ -217,6 +224,8 @@ module img_generator (
 
                     current_ball_x_movement <= 1;
                     current_ball_y_movement <= 3;
+                end else begin
+                    // MISS
                 end
 
             end else if (
