@@ -3,14 +3,14 @@
 `define PLAYER_HEIGHT 60
 `define PLAYER_WIDTH 12
 
-`define FRAME_WIDTH_MINUS_ONE 639
-`define FRAME_HEIGHT_MINUS_ONE 479
+`define FRAME_WIDTH 640
+`define FRAME_HEIGHT 480
 
-`define INITIAL_BALL_X_POS 317
-`define INITIAL_BALL_Y_POS 237
+`define INITIAL_BALL_X_POS 318
+`define INITIAL_BALL_Y_POS 238
 `define INITIAL_PLAYER_Y_POS 210
 
-`define PLAYER_1_X_POS 24
+`define PLAYER_1_X_POS 25
 `define PLAYER_2_X_POS 615
 
 `define DEFAULT_PLAYER_SPEED 30
@@ -52,7 +52,6 @@ module img_generator (
         x >= `PLAYER_2_X_POS && x <= (`PLAYER_2_X_POS + `PLAYER_WIDTH) &&
         y >= player_2_y_pos && y <= (player_2_y_pos + `PLAYER_HEIGHT)
     ) ? 3'b100 : 3'b000 | 3*{(x == 640 || x == 1 || y == 480 || y == 1) ? 1'b1 : 1'b0};
-
 
     reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
