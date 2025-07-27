@@ -1,4 +1,4 @@
-`define BALL_RADIUS 5
+`define BALL_RADIUS 9
 
 `define PLAYER_HEIGHT 60
 `define PLAYER_WIDTH 12
@@ -15,6 +15,8 @@
 
 `define DEFAULT_PLAYER_SPEED 30
 
+`define INITIAL_BALL_DIRECTION = 0
+
 module img_generator (
     input wire CLOCK_25,
     input wire[11:0] x, 
@@ -28,10 +30,19 @@ module img_generator (
         .BALL_CLOCK(BALL_CLOCK)
     );
 
+    reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
+    reg[11:0] ball_y_pos = `INITIAL_BALL_Y_POS;
+
+    reg ball_direction_top  = 0;
+    reg ball_direction_left = 0;
+
+    reg current_ball_x_movement = 6;
+    reg current_ball_y_movement = 0;
+
     assign color = (
         // Draw Ball
-        x >= `INITIAL_BALL_X_POS && x <= (`INITIAL_BALL_X_POS + `BALL_RADIUS) &&
-        y >= `INITIAL_BALL_Y_POS && y <= (`INITIAL_BALL_Y_POS + `BALL_RADIUS)
+        x >= ball_x_pos && x <= (ball_x_pos + `BALL_RADIUS) &&
+        y >= ball_y_pos && y <= (ball_y_pos + `BALL_RADIUS)
     ) ? 3'b111 : (
         // Draw Player 1
         x >= `PLAYER_1_X_POS && x <= (`PLAYER_1_X_POS + `PLAYER_WIDTH) &&
@@ -42,19 +53,19 @@ module img_generator (
         y >= `INITIAL_PLAYER_Y_POS && y <= (`INITIAL_PLAYER_Y_POS + `PLAYER_HEIGHT)
     ) ? 3'b100 : 3'b000;
 
-    /*wire[11:0] top_player_1 = `INITIAL_PLAYER_Y_POS;
-    wire[11:0] top_player_2 = `INITIAL_PLAYER_Y_POS;
+    reg[11:0] player_1_y_pos;
+    reg[11:0] player_2_y_pos;
 
-    wire[11:0] ball_top  = `INITIAL_BALL_Y_POS;
-    wire[11:0] ball_left = `INITIAL_BALL_X_POS;
-
-    reg ball_left = 0; // 1 => going to the left | 0 => going to the right
-    reg ball_top  = 0; // 1 => going to the top  | 0 => going to the bottom
-    reg ball_x_dir = 0;
-    reg ball_y_dir = 0; 
-
-    // Handles Ball-Logic
+    // Ball Logic
     always @(posedge BALL_CLOCK) begin
-        
-    end*/
+        case (ball_direction_left)
+            0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
+            1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
+        endcase
+
+        case (ball_direction_top)
+            0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
+            1: ball_x_pos <= ball_x_pos - current_ball_x_movement; 
+        endcase
+    end
 endmodule
