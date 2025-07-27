@@ -51,10 +51,10 @@ module img_generator (
         // Draw Player 2
         x >= `PLAYER_2_X_POS && x <= (`PLAYER_2_X_POS + `PLAYER_WIDTH) &&
         y >= `INITIAL_PLAYER_Y_POS && y <= (`INITIAL_PLAYER_Y_POS + `PLAYER_HEIGHT)
-    ) ? 3'b100 : 3'b000;
+    ) ? 3'b100 : 3'b010;
 
-    reg[11:0] player_1_y_pos;
-    reg[11:0] player_2_y_pos;
+    reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
+    reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
 
     // Ball Logic
     always @(posedge BALL_CLOCK) begin
@@ -64,8 +64,8 @@ module img_generator (
         endcase
 
         case (ball_direction_top)
-            0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
-            1: ball_x_pos <= ball_x_pos - current_ball_x_movement; 
+            0: ball_y_pos <= ball_y_pos + current_ball_y_movement;
+            1: ball_y_pos <= ball_y_pos - current_ball_y_movement; 
         endcase
     end
 endmodule
