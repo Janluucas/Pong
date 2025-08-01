@@ -14,10 +14,12 @@ module rotary_encoder (
 
     reg up_r = 0;
     reg down_r = 0;
-    assign up = up_r;
-    assign down = down_r;
+    assign up = (dead_zone == 0) ? up_r : 0;
+    assign down = (dead_zone == 0) ? down_r : 0;
 
     reg signal_sent = 0;
+
+    reg[31:0] dead_zone;
 
     always @(posedge clk) begin
         if (!signal_sent) begin
@@ -45,11 +47,14 @@ module rotary_encoder (
                 end
             end
         end else begin
-            a_low_first <= 0;
-            b_low_first <= 0;
-            up_r <= 0;
-            down_r <= 0;
-            signal_sent <= 0;
+            dead_zone <= dead_zone + 1'b1;
+            if (dead_zone == 0) begin
+                a_low_first <= 0;
+                b_low_first <= 0;
+                up_r <= 0;
+                down_r <= 0;
+                signal_sent <= 0;
+            end
         end
     end
 
