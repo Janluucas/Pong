@@ -15,10 +15,14 @@ module rotary_encoder (
     reg up_r = 0;
     reg down_r = 0;
     reg out = 0;
+    reg triggered = 0;
+    reg triggered_old = 0;
+    reg[23:0] dead_zone = 24'b0;
     assign up = out? up_r : 0;
     assign down = out? down_r : 0;
 
     always @(negedge in_a) begin 
+        triggered <= ~triggered;
         if (in_b) begin
             up_r = 1;
             down_r = 0;
@@ -29,12 +33,17 @@ module rotary_encoder (
     end
 
     always @(posedge clk) begin
-        out <= 1;
-    end
-
-    always @(negedge clk) begin
-        out <= 0;
-        up_r <= 0;
-        down_r <= 0;
+        if (triggered != triggered_old && dead_zone == 24'b0) begin
+            out <= 1;
+            triggered_old <= triggered;
+            dead_zone <= dead_zone + 1'b1;
+        end
+        else begin
+            out <= 0;
+            if (dead_zone != 24'b0) begin
+                dead_zone <= dead_zone + 1'b1;
+                
+            end
+        end
     end
 endmodule
