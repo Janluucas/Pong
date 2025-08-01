@@ -20,12 +20,9 @@ module img_generator (
     output wire[7:0] led*/
 );
     reg BALL_CLOCK;
-    reg[7:0] led_r;
-    assign led = led_r;
     ball_clock ballzzz(
         .CLOCK_25(CLOCK_25),
-        .BALL_CLOCK(BALL_CLOCK),
-        .led(led_r)
+        .BALL_CLOCK(BALL_CLOCK)
     );
 
     reg pause_active_low = 0;   // yes, by default the game is supposed to be paused
