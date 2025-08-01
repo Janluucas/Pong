@@ -30,7 +30,7 @@ module img_generator (
 
     reg pause_active_low = 0;   // yes, by default the game is supposed to be paused
 
-    always @(posedge BALL_CLOCK) begin
+/*    always @(posedge BALL_CLOCK) begin
         // key1 == continue
         if (key1 == 0) begin
             pause_active_low <= 1;
@@ -39,7 +39,7 @@ module img_generator (
         end else if (key0 == 0) begin
             pause_active_low <= 0
         end
-    end
+    end*/
 
     /*reg[1:0] mode;
     // Animations on FPGA LEDs
