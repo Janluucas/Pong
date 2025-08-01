@@ -14,48 +14,38 @@ module rotary_encoder (
 
     reg up_r = 0;
     reg down_r = 0;
-    assign up = (dead_zone == 0) ? up_r : 0;
-    assign down = (dead_zone == 0) ? down_r : 0;
+    assign up = (dead_zone == 32'hFFFFFFFF) ? up_r : 0;
+    assign down = (dead_zone == 32'hFFFFFFFF) ? down_r : 0;
 
     reg signal_sent = 0;
 
-    reg[31:0] dead_zone;
+    reg[31:0] dead_zone = 32'b0;
 
     always @(posedge clk) begin
-        if (!signal_sent) begin
-            if (!a_low_first && !b_low_first) begin
-                if (!in_a) begin
-                    a_low_first <= 1;
-                end else if (!in_b) begin
-                    b_low_first <= 1;
-                end
-                up_r <= 0;
-                down_r <= 0;
-            end else if (a_low_first) begin
-                if (!in_b) begin
-                    up_r <= 1;
+        case ({in_a, in_b, a_low_first, b_low_first, signal_sent})
+            2'bxx_xx_1: begin
+                dead_zone <= dead_zone + 1'b1;
+                if (dead_zone == 32'hFFFFFFFF) begin
+                    signal_sent <= 0;
+                    up_r <= 0;
+                    down_r <= 0;
                     a_low_first <= 0;
                     b_low_first <= 0;
-                    signal_sent <= 1;
-                end
-            end else if (b_low_first) begin
-                if (!in_a) begin
-                    down_r <= 1;
-                    a_low_first <= 0;
-                    b_low_first <= 0;
-                    signal_sent <= 1;
                 end
             end
-        end else begin
-            dead_zone <= dead_zone + 1'b1;
-            if (dead_zone == 0) begin
-                a_low_first <= 0;
-                b_low_first <= 0;
-                up_r <= 0;
-                down_r <= 0;
-                signal_sent <= 0;
+
+            2'b01_01_0: begin
+                up_r <= 1;
+                signal_sent <= 1;
             end
-        end
+            2'b10_10_0: begin
+                down_r <= 1;
+                signal_sent <= 1;
+            end
+
+            2'b01_00_0: a_low_first <= 1;
+            2'b10_00_0: b_low_first <= 1;
+        endcase
     end
 
 endmodule
