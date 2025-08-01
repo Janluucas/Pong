@@ -9,7 +9,7 @@ module img_generator (
     input wire player_1_switch,
     input wire player_2_a,
     input wire player_2_b,
-    input wire player_2_switch,
+    input wire player_2_switch/*,
 
     // FPGA buttons (TODO: suspected to be active low)
     input wire key0,
@@ -17,7 +17,7 @@ module img_generator (
 
     output wire[2:0] color,
     // FPGA led
-    output wire[7:0] led
+    output wire[7:0] led*/
 );
     reg BALL_CLOCK;
     reg[7:0] led_r;
@@ -41,13 +41,13 @@ module img_generator (
         end
     end
 
-    reg[1:0] mode;
+    /*reg[1:0] mode;
     // Animations on FPGA LEDs
     animation a0(
         .BALL_CLOCK(BALL_CLOCK),
         .mode(mode),
         .
-    );
+    );*/
 
     reg player_1_up = 0;
     reg player_1_down = 0;
