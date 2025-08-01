@@ -22,8 +22,8 @@ module rotary_encoder (
     reg[31:0] dead_zone = 32'b0;
 
     always @(posedge clk) begin
-        case ({in_a, in_b, a_low_first, b_low_first, signal_sent})
-            2'bxx_xx_1: begin
+        casez ({in_a, in_b, a_low_first, b_low_first, signal_sent})
+            2'b??_??_1: begin
                 dead_zone <= dead_zone + 1'b1;
                 if (dead_zone == 32'hFFFFFFFF) begin
                     signal_sent <= 0;
