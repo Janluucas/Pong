@@ -34,11 +34,11 @@ module rotary_encoder (
                 end
             end
 
-            2'b01_01_0: begin
+            2'b0?_01_0: begin
                 up_r <= 1;
                 signal_sent <= 1;
             end
-            2'b10_10_0: begin
+            2'b?0_10_0: begin
                 down_r <= 1;
                 signal_sent <= 1;
             end
