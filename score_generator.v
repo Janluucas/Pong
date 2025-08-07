@@ -7,7 +7,7 @@ module score_generator (
     input wire[11:0] y,
 
     input wire[2:0] score,
-    input reg[11:0] horizontal_offset,
+    input wire[11:0] horizontal_offset,
 
     output wire out,
     output wire win
