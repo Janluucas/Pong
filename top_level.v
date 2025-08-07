@@ -4,14 +4,19 @@ module top_level(
   output wire		GPIO_000, GPIO_001, GPIO_003, GPIO_005, GPIO_007,
   output reg [7:0] 	led,
   input  wire		key0, key1,
-  output wire GPIO_033, GPIO_031, GPIO_025, GPIO_017, // Player 1 output
-  input wire GPIO_015, GPIO_013, GPIO_011, GPIO_009 //Player 1 inputs
+  output wire GPIO_033, GPIO_031, GPIO_017, // Player 1 output
+  input wire GPIO_015, GPIO_013, GPIO_011, GPIO_009, GPIO_025 //Player 1 inputs
 );
 
-  reg player_1_up;
-  reg player_1_down;
-  reg player_2_up;
-  reg player_2_down;
+  reg player_1_up = 0;
+  reg player_1_down = 0;
+  reg player_2_up = 0;
+  reg player_2_down = 0;
+
+  /*always @(posedge CLOCK_25) begin
+    led <= {player_1_up, GPIO_033, GPIO_031, GPIO_025, 3'b0, player_1_down};
+  end*/
+  
 
   // VGA-Output
   vga mon(.CLOCK_50	(CLOCK_50), 
