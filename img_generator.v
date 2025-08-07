@@ -4,13 +4,13 @@ module img_generator (
     input wire CLOCK_25,
     input wire[11:0] x, 
     input wire[11:0] y,
-    input wire player_1_a,
-    input wire player_1_b,
-    input wire player_1_switch,
-    input wire player_2_a,
-    input wire player_2_b,
-    input wire player_2_switch,/*
 
+    input wire player_1_up,
+    input wire player_1_down,
+    input wire player_2_up,
+    input wire player_2_down,
+
+    /*
     // FPGA buttons (TODO: suspected to be active low)
     input wire key0,
     input wire key1,
@@ -45,34 +45,6 @@ module img_generator (
         .mode(mode),
         .
     );*/
-
-    reg player_1_up = 0;
-    reg player_1_down = 0;
-    reg player_2_up = 0;
-    reg player_2_down = 0;
-
-    reg button_player_1 = 0;
-    reg button_player_2 = 0;
-
-    rotary_encoder player1_input(
-        .clk(CLOCK_25),
-        .in_a(player_1_a),
-        .in_b(player_1_b),
-        .switch(1'b0), // No switch input
-        .up(player_1_up),
-        .down(player_1_down),
-        .button(button_player_1) // Not used
-    );
-
-    rotary_encoder player2_input(
-        .clk(CLOCK_25),
-        .in_a(player_2_a),
-        .in_b(player_2_b),
-        .switch(1'b0), // No switch input
-        .up(player_2_up),
-        .down(player_2_down),
-        .button(button_player_2) // Not used
-    );
 
     // Player Logic
     always @(posedge CLOCK_25) begin

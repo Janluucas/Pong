@@ -63,8 +63,8 @@ module vga(
   output wire     	o_red,
   output wire     	o_grn,
   output wire     	o_blu,
-  input wire        player_1_a, player_1_b, player_1_switch, // Player 1 inputs
-  input wire        player_2_a, player_2_b, player_2_switch // Player 2 inputs
+  input wire        player_1_up, player_1_down, // Player 1 inputs
+  input wire        player_2_up, player_2_down // Player 2 inputs
 );  
 
   // Clocks
@@ -100,12 +100,10 @@ module vga(
     .x(x),
     .y(y),
     .color(color),
-    .player_1_a(player_1_a),
-    .player_1_b(player_1_b),
-    .player_1_switch(player_1_switch),
-    .player_2_a(player_2_a),
-    .player_2_b(player_2_b),
-    .player_2_switch(player_2_switch)
+    .player_1_up(player_1_up),
+    .player_1_down(player_1_down),
+    .player_2_up(player_2_up),
+    .player_2_down(player_2_down)
   );
 
 endmodule 
