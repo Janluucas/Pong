@@ -25,12 +25,12 @@ module score_generator (
                     (x < (horizontal_offset + 12))
                 ) || (
                     ((`VERTICAL_SCORE_OFFSET + 4) <= y) &&
-                    (y < (`VERTICAL_SCORE_OFFSET + 20)) &&
+                    (y < (`VERTICAL_SCORE_OFFSET + 24)) &&
                     (horizontal_offset <= x) &&
                     (x < (horizontal_offset + 4))
                 ) || (
                     ((`VERTICAL_SCORE_OFFSET + 4) <= y) &&
-                    (y < (`VERTICAL_SCORE_OFFSET + 20)) &&
+                    (y < (`VERTICAL_SCORE_OFFSET + 24)) &&
                     ((horizontal_offset + 12) <= x) &&
                     (x < (horizontal_offset + 16))
                 ) || (
@@ -108,7 +108,7 @@ module score_generator (
                     ((horizontal_offset + 12) <= x) &&
                     (x < (horizontal_offset + 16))
                 ) || (
-                    (`VERTICAL_SCORE_OFFSET <= 24) &&
+                    ((`VERTICAL_SCORE_OFFSET + 24) <= y) &&
                     (y < (`VERTICAL_SCORE_OFFSET + 28)) &&
                     (horizontal_offset <= x) &&
                     (x < (horizontal_offset + 12))
@@ -152,7 +152,7 @@ module score_generator (
                     ((`VERTICAL_SCORE_OFFSET + 16) <= y) &&
                     (y < (`VERTICAL_SCORE_OFFSET + 24)) &&
                     ((horizontal_offset + 12) <= x) &&
-                    (x < (horizontal_offset + 20))
+                    (x < (horizontal_offset + 16))
                 ) || (
                     ((`VERTICAL_SCORE_OFFSET + 24) <= y) &&
                     (y < (`VERTICAL_SCORE_OFFSET + 28)) &&
