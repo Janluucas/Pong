@@ -128,10 +128,10 @@ module img_generator (
         y >= ball_y_pos && y <= (ball_y_pos + `BALL_RADIUS)
     ) ? 3'b111 : (
         // Draw Score 1
-        score_1_out == 1
+        score_1_out
     ) ? 3'b001 : (
         // Draw Score 2
-        score_2_out == 1
+        score_2_out
     ) ? 3'b100 : (
         // Draw Player 1
         x >= `PLAYER_1_X_POS && x <= (`PLAYER_1_X_POS + `PLAYER_WIDTH) &&
@@ -156,17 +156,18 @@ module img_generator (
 
     // Score Logic
     score_generator score_1(
-        .clk(BALL_CLOCK),
+        .clk(CLOCK_25),
         .x(x), .y(y),
         .score(score_player_1),
         .horizontal_offset(`HORIZONTAL_SCORE_OFFSET),
         .out(score_1_out)
     );
     score_generator score_2(
-        .clk(BALL_CLOCK),
+        .clk(CLOCK_25),
         .x(x), .y(y),
         .score(score_player_2),
-        .horizontal_offset(`FRAME_WIDTH - `HORIZONTAL_SCORE_OFFSET - `SCORE_WIDTH - 1)
+        .horizontal_offset(`FRAME_WIDTH - `HORIZONTAL_SCORE_OFFSET - `SCORE_WIDTH - 1),
+        .out(score_2_out)
     );
 
     // Ball Logic
