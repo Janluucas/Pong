@@ -26,3 +26,7 @@
 `define HIT_ZONE_4   35
 `define HIT_ZONE_5   47
 `define HIT_ZONE_MAX 59
+
+`define VERTICAL_SCORE_OFFSET 14
+`define HORIZONTAL_SCORE_OFFSET 80
+`define SCORE_WIDTH 16

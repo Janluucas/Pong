@@ -120,11 +120,19 @@ module img_generator (
     reg[2:0] current_ball_x_movement = 4;
     reg[2:0] current_ball_y_movement = 0;
 
+
+
     assign color = (
         // Draw Ball
         x >= ball_x_pos && x <= (ball_x_pos + `BALL_RADIUS) &&
         y >= ball_y_pos && y <= (ball_y_pos + `BALL_RADIUS)
     ) ? 3'b111 : (
+        // Draw Score 1
+        score_1_out
+    ) ? 3'b001 : (
+        // Draw Score 2
+        score_2_out
+    ) ? 3'b100 : (
         // Draw Player 1
         x >= `PLAYER_1_X_POS && x <= (`PLAYER_1_X_POS + `PLAYER_WIDTH) &&
         y >= player_1_y_pos && y <= (player_1_y_pos + `PLAYER_HEIGHT)
@@ -137,11 +145,29 @@ module img_generator (
     reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
 
-    reg[3:0] score_player_1 = 0;
-    reg[3:0] score_player_2 = 0;
+    reg[2:0] score_player_1 = 0;
+    reg[2:0] score_player_2 = 0;
     reg[2:0] winner_color = 3'b000;
 
     reg miss_indicator = 0;
+
+    wire score_1_out;
+    wire score_2_out;
+
+    // Score Logic
+    score_generator score_1(
+        .clk(BALL_CLOCK),
+        .x(x), .y(y),
+        .score(score_player_1),
+        .horizontal_offset(`HORIZONTAL_SCORE_OFFSET),
+        .out(score_1_out)
+    );
+    score_generator score_2(
+        .clk(BALL_CLOCK),
+        .x(x), .y(y),
+        .score(score_player_2),
+        .horizontal_offset(`FRAME_WIDTH - `HORIZONTAL_SCORE_OFFSET - `SCORE_WIDTH - 1)
+    );
 
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
