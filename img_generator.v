@@ -128,10 +128,10 @@ module img_generator (
         y >= ball_y_pos && y <= (ball_y_pos + `BALL_RADIUS)
     ) ? 3'b111 : (
         // Draw Score 1
-        score_1_out
+        score_1_out == 1
     ) ? 3'b001 : (
         // Draw Score 2
-        score_2_out
+        score_2_out == 1
     ) ? 3'b100 : (
         // Draw Player 1
         x >= `PLAYER_1_X_POS && x <= (`PLAYER_1_X_POS + `PLAYER_WIDTH) &&
@@ -151,8 +151,8 @@ module img_generator (
 
     reg miss_indicator = 0;
 
-    wire score_1_out;
-    wire score_2_out;
+    reg score_1_out;
+    reg score_2_out;
 
     // Score Logic
     score_generator score_1(
