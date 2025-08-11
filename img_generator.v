@@ -58,7 +58,13 @@ module img_generator (
                     player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
                 end
             end
+            else if ((keys_1 == 4'd5) || (keys_2 == 4'd5)) begin
+                pause_active_low <= 1;
+            end        
         end
+        else if ((keys_1 == 4'd5) || (keys_2 == 4'd5)) begin
+            pause_active_low <= 0;
+        end        
     end
 
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
