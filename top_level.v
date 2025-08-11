@@ -13,13 +13,17 @@ module top_level(
 );
 
   // Clocks 25
-  reg CLOCK_25 = 0;
-  always @(posedge CLOCK_50) CLOCK_25 = ~CLOCK_25;
+  reg CLOCK_TINY = 0;
+  reg[9:0] cnt = 0;
+  always @(posedge CLOCK_50) begin
+    cnt <= cnt + 1'b1;
+    if (cnt == 0) CLOCK_TINY = ~CLOCK_TINY;
+  end
 
-  wire [3:0] keys_1;
-  wire keypressed_1;
-  wire [3:0] keys_2;
-  wire keypressed_2;
+  reg [3:0] keys_1 = 0;
+  reg keypressed_1 = 0;
+  reg [3:0] keys_2 = 0;
+  reg keypressed_2 = 0;
 
   // VGA-Output
   vga mon(.CLOCK_50	(CLOCK_50), 
@@ -37,19 +41,19 @@ module top_level(
 
 //Player1
 keypad player1(
-  .clk(CLOCK_50),
-  .cols({GPIO_015, GPIO_013, GPIO_011, GPIO_009}),
-  .rows({GPIO_023, GPIO_021, GPIO_019, GPIO_017}),
-  .keys(keys_1),
+  .clk(CLOCK_TINY),
+  .cols({GPIO_009, GPIO_011, GPIO_013, GPIO_015}),
+  .rows({GPIO_017, GPIO_019, GPIO_021, GPIO_023}),
+  .keycode(keys_1),
   .keypressed(keypressed_1)
 );
 
 //Player2
 keypad player2(
-  .clk(CLOCK_50),
-  .cols({GPIO_014, GPIO_012, GPIO_010, GPIO_008}),
-  .rows({GPIO_022, GPIO_020, GPIO_018, GPIO_016}),
-  .keys(keys_2),
+  .clk(CLOCK_TINY),
+  .cols({GPIO_008, GPIO_010, GPIO_012, GPIO_014}),
+  .rows({GPIO_016, GPIO_018, GPIO_020, GPIO_022}),
+  .keycode(keys_2),
   .keypressed(keypressed_2)
 );
 
