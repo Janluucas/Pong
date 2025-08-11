@@ -5,9 +5,7 @@ module img_generator (
     input wire[11:0] x, 
     input wire[11:0] y,
     input wire [3:0]  keys_1, // Player 1 inputs
-    input wire        keypressed_1,
     input wire [3:0]  keys_2, // Player 2 inputs
-    input wire        keypressed_2,
 
     /*
     // FPGA buttons (TODO: suspected to be active low)
@@ -27,17 +25,17 @@ module img_generator (
     reg pause_active_low = 0;   // yes, by default the game is supposed to be paused
 
     // Player Logic
-    always @(posedge CLOCK_25) begin
+    always @(posedge BALL_CLOCK) begin
         if (pause_active_low == 0) begin
             // Player 1 Movement Logic
-            if ((keys_1 == 4'd2) && (keypressed_1 == 1'b1)) begin
+            if (keys_1 == 4'd2) begin
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
                     player_1_y_pos <= 1;
                 end else begin
                     player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            if ((keys_1 == 4'd8) && (keypressed_1 == 1'b1)) begin
+            else if (keys_1 == 4'd8) begin
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin
                     player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
@@ -46,14 +44,14 @@ module img_generator (
             end
 
             // Player 2 Movement Logic
-            if (keys_2 == 4'd2 && (keypressed_2 == 1'b1)) begin
+            if (keys_2 == 4'd2) begin
                 if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin
                     player_2_y_pos <= 1;
                 end else begin
                     player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            if (keys_2 == 4'd8 && (keypressed_2 == 1'b1)) begin
+            else if (keys_2 == 4'd8) begin
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin
                     player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
