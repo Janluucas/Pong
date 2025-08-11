@@ -1,4 +1,5 @@
-`define BALL_RADIUS 9		// Note due to my stupidity: RADIUS means here SIZE
+`define BALL_SIZE 8
+`define BALL_CENTER_OFFSET 4
 `define BALL_COLOR 3'b111
 
 `define PLAYER_HEIGHT 60
@@ -24,8 +25,8 @@
 `define INITIAL_BALL_DIRECTION 0
 
 `define COLLISION_OFFSET 4
-`define BALL_CENTER_OFFSET 5
 
+`define CORNER_HIT_ZONE_SIZE 4
 `define HIT_ZONE_1    0
 `define HIT_ZONE_2   11
 `define HIT_ZONE_3   23
