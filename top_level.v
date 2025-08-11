@@ -35,7 +35,9 @@ module top_level(
           .o_grn	(GPIO_005),
           .o_blu	(GPIO_003),
           .keys_1(keys_1),
-          .keys_2(keys_2)
+          .keys_2(keys_2),
+          .key0(key0),
+          .key1(key1)
 );
 
 //Player1

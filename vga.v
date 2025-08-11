@@ -64,7 +64,9 @@ module vga(
   output wire     	o_grn,
   output wire     	o_blu,
   input wire [3:0]  keys_1, // Player 1 inputs
-  input wire [3:0]  keys_2 // Player 2 inputs
+  input wire [3:0]  keys_2, // Player 2 inputs
+  input wire key0,
+  input wire key1
 );  
 
   // Clocks
@@ -101,7 +103,9 @@ module vga(
     .y(y),
     .color(color),
     .keys_1(keys_1),
-    .keys_2(keys_2)
+    .keys_2(keys_2),
+    .key0(key0),
+    .key1(key1)
   );
 
 endmodule 
