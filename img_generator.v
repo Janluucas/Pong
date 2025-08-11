@@ -215,7 +215,7 @@ module img_generator (
                 if (score_player_2 == 7) begin
                     score_player_1 <= 0;
                     score_player_2 <= 0;
-
+                    
                     last_winner_color <= `PLAYER_2_COLOR;
                 end else begin
                     score_player_2 <= score_player_2 + 1'b1;
@@ -273,7 +273,7 @@ module img_generator (
                 if (score_player_1 == 7) begin
                     score_player_1 <= 0;
                     score_player_2 <= 0;
-
+                    
                     last_winner_color <= `PLAYER_1_COLOR;
                 end else begin
                     score_player_1 <= score_player_1 + 1'b1;
