@@ -157,7 +157,7 @@ module img_generator (
                 current_ball_x_movement <= 4;
                 miss_indicator <= 0;
             end
-        end else if (ball_x_pos < `PLAYER_1_X_POS) begin
+        end /*else if (ball_x_pos < `PLAYER_1_X_POS) begin
             // Edge case MISS
             if (score_player_2 == 7) begin
                 score_player_2 <= 0;
@@ -177,7 +177,7 @@ module img_generator (
                 score_player_1 <= score_player_1 + 1;
             end
             miss_indicator <= 1;
-        end else begin
+        end*/ else begin
         
         // NEW:Ball Collision on X_Axis
 
