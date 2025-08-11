@@ -13,6 +13,9 @@ module top_level(
 );
 
   // Clocks 25
+  reg CLOCK_25 = 0;
+  always @(posedge CLOCK_50) CLOCK_25 = ~CLOCK_25;
+
   reg CLOCK_TINY = 0;
   reg[9:0] cnt = 0;
   always @(posedge CLOCK_50) begin
@@ -37,7 +40,7 @@ module top_level(
 
 //Player1
 keypad player1(
-  .clk(CLOCK_TINY),
+  .clk(CLOCK_25),
   .cols({GPIO_009, GPIO_011, GPIO_013, GPIO_015}),
   .rows({GPIO_017, GPIO_019, GPIO_021, GPIO_023}),
   .keycode(keys_1)
@@ -45,7 +48,7 @@ keypad player1(
 
 //Player2
 keypad player2(
-  .clk(CLOCK_TINY),
+  .clk(CLOCK_25),
   .cols({GPIO_008, GPIO_010, GPIO_012, GPIO_014}),
   .rows({GPIO_016, GPIO_018, GPIO_020, GPIO_022}),
   .keycode(keys_2)
