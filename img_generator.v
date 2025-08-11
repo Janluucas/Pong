@@ -30,14 +30,14 @@ module img_generator (
     always @(posedge CLOCK_25) begin
         if (pause_active_low == 0) begin
             // Player 1 Movement Logic
-            if (player_1_up) begin
+            if (keys_1 == 4'd2 && keypressed) begin
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
                     player_1_y_pos <= 1;
                 end else begin
                     player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            if (player_1_down) begin
+            if (keys_1 == 4'd8 && keypressed) begin
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin
                     player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
@@ -46,14 +46,14 @@ module img_generator (
             end
 
             // Player 2 Movement Logic
-            if (player_2_up) begin
+            if (keys_2 == 4'd2 && keypressed) begin
                 if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin
                     player_2_y_pos <= 1;
                 end else begin
                     player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            if (player_2_down) begin
+            if (eys_2 == 4'd8 && keypressed) begin
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin
                     player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
