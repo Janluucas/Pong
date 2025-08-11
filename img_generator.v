@@ -178,11 +178,15 @@ module img_generator (
             end
             miss_indicator <= 1;
         end else begin
+        
+        // NEW:Ball Collision on X_Axis
+
+        // NEW:Ball Collision on X_Axis
 
 
 
         // OLD: Ball Collision on X_Axis
-        if ((`PLAYER_1_X_POS + `PLAYER_WIDTH) <= ball_x_pos && ball_x_pos <= (`PLAYER_1_X_POS + `PLAYER_WIDTH + `COLLISION_OFFSET)) begin
+        /*if ((`PLAYER_1_X_POS + `PLAYER_WIDTH) <= ball_x_pos && ball_x_pos <= (`PLAYER_1_X_POS + `PLAYER_WIDTH + `COLLISION_OFFSET)) begin
             // ball is on x level of player 1
             if ((ball_y_pos + `BALL_CENTER_OFFSET) < player_1_y_pos) begin
                 // center pixel of ball is above player; corner hit still possible
@@ -373,10 +377,10 @@ module img_generator (
                 current_ball_x_movement <= 2;
                 current_ball_y_movement <= 2;
             end
-        end
+        end*/
+        // OLD: Ball Collision on X_Axis
 
         end
-        // OLD: Ball Collision on X_Axis
     end
     
 endmodule
