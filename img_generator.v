@@ -142,12 +142,15 @@ module img_generator (
         end
 
         if (miss_indicator) begin
+            // Ball reset logic
             if (
                 (1 <= ball_x_pos && ball_x_pos <= `BALL_RADIUS) ||
                 ((`FRAME_WIDTH - `BALL_RADIUS) <= ball_x_pos && ball_x_pos <= (`FRAME_WIDTH - 1))
             ) begin
                 ball_x_pos <= `INITIAL_BALL_X_POS;
-                ball_y_pos <= `INITIAL_BALL_Y_POS;
+                ball_y_pos <= (ball_x_pos < `HALF_FRAME_WIDTH) ? player_1_y_pos + `HALF_PLAYER_HEIGHT : player_2_y_pos + `HALF_PLAYER_HEIGHT; // in prev. version: `INITIAL_BALL_Y_POS;
+                current_ball_y_movement <= 0;
+                current_ball_x_movement <= 4;
                 miss_indicator <= 0;
             end
         end else begin
