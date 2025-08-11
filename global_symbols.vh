@@ -1,4 +1,5 @@
 `define BALL_RADIUS 9
+`define BALL_COLOR 3'b111
 
 `define PLAYER_HEIGHT 60
 `define HALF_PLAYER_HEIGHT 30
@@ -22,7 +23,7 @@
 
 `define INITIAL_BALL_DIRECTION 0
 
-`define COLLISION_OFFSET 3
+`define COLLISION_OFFSET 4
 `define BALL_CENTER_OFFSET 5
 
 `define HIT_ZONE_1    0

@@ -76,7 +76,7 @@ module img_generator (
         // Draw Ball
         x >= ball_x_pos && x <= (ball_x_pos + `BALL_RADIUS) &&
         y >= ball_y_pos && y <= (ball_y_pos + `BALL_RADIUS)
-    ) ? ball_color : (
+    ) ? `BALL_COLOR : (
         // Draw Score 1
         score_1_out
     ) ? `PLAYER_1_COLOR : (
@@ -148,11 +148,31 @@ module img_generator (
                 ((`FRAME_WIDTH - `BALL_RADIUS) <= ball_x_pos && ball_x_pos <= (`FRAME_WIDTH - 1))
             ) begin
                 ball_x_pos <= `INITIAL_BALL_X_POS;
-                ball_y_pos <= (ball_x_pos < `HALF_FRAME_WIDTH) ? player_1_y_pos + `HALF_PLAYER_HEIGHT : player_2_y_pos + `HALF_PLAYER_HEIGHT; // in prev. version: `INITIAL_BALL_Y_POS;
+                ball_y_pos <= (ball_x_pos < `HALF_FRAME_WIDTH) ? player_1_y_pos + `HALF_PLAYER_HEIGHT - `BALL_CENTER_OFFSET : player_2_y_pos + `HALF_PLAYER_HEIGHT - `BALL_CENTER_OFFSET; // in prev. version: `INITIAL_BALL_Y_POS;
                 current_ball_y_movement <= 0;
                 current_ball_x_movement <= 4;
                 miss_indicator <= 0;
             end
+        end else if (ball_x_pos < `PLAYER_1_X_POS) begin
+            // Edge case MISS
+            if (score_player_2 == 7) begin
+                score_player_2 <= 0;
+                score_player_1 <= 0;
+                ball_color <= `PLAYER_2_COLOR;
+            end else begin
+                score_player_2 <= score_player_2 + 1;
+            end
+            miss_indicator <= 1;
+        end else if (`PLAYER_2_X_POS < ball_x_pos) begin
+            // Edge case MISS
+            if (score_player_1 == 7) begin
+                score_player_2 <= 0;
+                score_player_1 <= 0;
+                ball_color <= `PLAYER_2_COLOR;
+            end else begin
+                score_player_1 <= score_player_1 + 1;
+            end
+            miss_indicator <= 1;
         end else begin
 
         // Ball Collision on X_Axis
@@ -181,7 +201,7 @@ module img_generator (
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_1_y_pos + `PLAYER_HEIGHT)) begin
                 // center pixel of ball is below player; corner hit still possible
-                if ((player_1_y_pos + `HIT_ZONE_5) <= ball_y_pos && ball_y_pos <= (player_1_y_pos + `PLAYER_HEIGHT + 1)) begin
+                if ((player_1_y_pos + `HIT_ZONE_MAX) <= ball_y_pos && ball_y_pos <= (player_1_y_pos + `PLAYER_HEIGHT + 1)) begin
                     // Hit at bottom corner of player
                     ball_direction_left <= 0;
                     ball_direction_top  <= 0;
@@ -278,7 +298,7 @@ module img_generator (
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_2_y_pos + `PLAYER_HEIGHT)) begin
                 // center pixel of ball is below player; corner hit still possible
-                if ((player_2_y_pos + `HIT_ZONE_5) <= ball_y_pos && ball_y_pos <= (player_2_y_pos + `PLAYER_HEIGHT + 1)) begin
+                if ((player_2_y_pos + `HIT_ZONE_MAX) <= ball_y_pos && ball_y_pos <= (player_2_y_pos + `PLAYER_HEIGHT + 1)) begin
                     // Hit at bottom corner of player
                     ball_direction_left <= 1;
                     ball_direction_top  <= 0;
