@@ -63,8 +63,10 @@ module vga(
   output wire     	o_red,
   output wire     	o_grn,
   output wire     	o_blu,
-  input wire        player_1_up, player_1_down, // Player 1 inputs
-  input wire        player_2_up, player_2_down // Player 2 inputs
+  input wire [3:0]  keys_1, // Player 1 inputs
+  input wire        keypressed_1,
+  input wire [3:0]  keys_2, // Player 2 inputs
+  input wire        keypressed_2 
 );  
 
   // Clocks
@@ -74,12 +76,12 @@ module vga(
 
   // Sync-Signale
   hsync   hs(.i_clk	(pixclk), 
-             .o_hsync	(o_hsync), 
-             .o_hblank	(hblank));
+            .o_hsync	(o_hsync), 
+            .o_hblank	(hblank));
 
   vsync   vs(.i_clk	(o_hsync), 
-             .o_vsync	(o_vsync), 
-             .o_vblank	(vblank));   
+            .o_vsync	(o_vsync), 
+            .o_vblank	(vblank));   
 
 
   // x,y Position
@@ -100,10 +102,10 @@ module vga(
     .x(x),
     .y(y),
     .color(color),
-    .player_1_up(player_1_up),
-    .player_1_down(player_1_down),
-    .player_2_up(player_2_up),
-    .player_2_down(player_2_down)
+    .keys_1(keys_1),
+    .keypressed_1(keypressed_1),
+    .keys_2(keys_2),
+    .keypressed_2(keypressed_2)
   );
 
 endmodule 

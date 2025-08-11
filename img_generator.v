@@ -4,11 +4,10 @@ module img_generator (
     input wire CLOCK_25,
     input wire[11:0] x, 
     input wire[11:0] y,
-
-    input wire player_1_up,
-    input wire player_1_down,
-    input wire player_2_up,
-    input wire player_2_down,
+    input wire [3:0]  keys_1, // Player 1 inputs
+    input wire        keypressed_1,
+    input wire [3:0]  keys_2, // Player 2 inputs
+    input wire        keypressed_2
 
     /*
     // FPGA buttons (TODO: suspected to be active low)

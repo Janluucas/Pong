@@ -4,19 +4,22 @@ module top_level(
   output wire		GPIO_000, GPIO_001, GPIO_003, GPIO_005, GPIO_007,
   output reg [7:0] 	led,
   input  wire		key0, key1,
-  output wire GPIO_033, GPIO_031, GPIO_017, // Player 1 output
-  input wire GPIO_015, GPIO_013, GPIO_011, GPIO_009, GPIO_025 //Player 1 inputs
+  // Player 1
+  input GPIO_015, GPIO_013, GPIO_011, GPIO_009,
+  output GPIO_023, GPIO_021, GPIO_019, GPIO_017,
+  //Player 2
+  input GPIO_014, GPIO_012, GPIO_010, GPIO_008,
+  output GPIO_022, GPIO_020, GPIO_018, GPIO_016
 );
 
-  reg player_1_up = 0;
-  reg player_1_down = 0;
-  reg player_2_up = 0;
-  reg player_2_down = 0;
+  // Clocks 25
+  reg CLOCK_25 = 0;
+  always @(posedge CLOCK_50) CLOCK_25 = ~CLOCK_25;
 
-  /*always @(posedge CLOCK_25) begin
-    led <= {player_1_up, GPIO_033, GPIO_031, GPIO_025, 3'b0, player_1_down};
-  end*/
-  
+  wire [3:0] keys_1;
+  wire keypressed_1;
+  wire [3:0] keys_2;
+  wire keypressed_2;
 
   // VGA-Output
   vga mon(.CLOCK_50	(CLOCK_50), 
@@ -26,29 +29,28 @@ module top_level(
           .o_red	(GPIO_007),
           .o_grn	(GPIO_005),
           .o_blu	(GPIO_003),
-          .player_1_up(player_1_up),
-          .player_1_down(player_1_down),
-          .player_2_up(player_2_up),
-          .player_2_down(player_2_down)
+          .keys_1(keys_1),
+          .keypressed_1(keypressed_1),
+          .keys_2(keys_2),
+          .keypressed_2(keypressed_2)
 );
 
-// Clocks 25
-  reg CLOCK_25 = 0;
-  always @(posedge CLOCK_50) CLOCK_25 = ~CLOCK_25;
+//Player1
+keypad player1(
+  .clk(CLOCK_50),
+  .cols({GPIO_015, GPIO_013, GPIO_011, GPIO_009}),
+  .rows({GPIO_023, GPIO_021, GPIO_019, GPIO_017}),
+  .keys(keys_1),
+  .keypressed(keypressed_1)
+);
 
-//Player 1 Controll
-keypad player_1(
-  .clk(CLOCK_25),
-  .wire1(GPIO_033),
-  .wire2(0),
-  .wire3(GPIO_031),
-  .wire4(0),
-  .wire5(0),
-  .wire6(GPIO_025),
-  .wire7(0),
-  .wire8(0),
-  .up(player_1_up),
-  .down(player_1_down)  
+//Player2
+keypad player2(
+  .clk(CLOCK_50),
+  .cols({GPIO_014, GPIO_012, GPIO_010, GPIO_008}),
+  .rows({GPIO_022, GPIO_020, GPIO_018, GPIO_016}),
+  .keys(keys_2),
+  .keypressed(keypressed_2)
 );
 
 endmodule
