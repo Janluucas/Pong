@@ -120,8 +120,12 @@ module img_generator (
         .out(score_2_out)
     );
 
+    reg[6:0] current_ball_movement_offset = 0;
+
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
+        current_ball_movement_offset <= current_ball_x_movement * current_ball_y_movement;
+
         if (pause_active_low == 0) begin
             case (ball_direction_left)
                 0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
@@ -175,12 +179,14 @@ module img_generator (
             miss_indicator <= 1;
         end else begin
 
-        // Ball Collision on X_Axis
+
+
+        // OLD: Ball Collision on X_Axis
         if ((`PLAYER_1_X_POS + `PLAYER_WIDTH) <= ball_x_pos && ball_x_pos <= (`PLAYER_1_X_POS + `PLAYER_WIDTH + `COLLISION_OFFSET)) begin
             // ball is on x level of player 1
             if ((ball_y_pos + `BALL_CENTER_OFFSET) < player_1_y_pos) begin
                 // center pixel of ball is above player; corner hit still possible
-                if ((player_1_y_pos - 1) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= player_1_y_pos + `HIT_ZONE_2) begin
+                if ((player_1_y_pos) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= player_1_y_pos + `HIT_ZONE_2) begin
                     // Hit at top corner of player
                     ball_direction_left <= 0;
                     ball_direction_top  <= 1;
@@ -201,7 +207,7 @@ module img_generator (
 
             end else if ((ball_y_pos + `BALL_CENTER_OFFSET) > (player_1_y_pos + `PLAYER_HEIGHT)) begin
                 // center pixel of ball is below player; corner hit still possible
-                if ((player_1_y_pos + `HIT_ZONE_MAX) <= ball_y_pos && ball_y_pos <= (player_1_y_pos + `PLAYER_HEIGHT + 1)) begin
+                if ((player_1_y_pos + `PLAYER_HEIGHT) <= ball_y_pos && ball_y_pos <= (player_1_y_pos + `PLAYER_HEIGHT + 1)) begin
                     // Hit at bottom corner of player
                     ball_direction_left <= 0;
                     ball_direction_top  <= 0;
@@ -277,7 +283,7 @@ module img_generator (
             // ball is on x level of player 2
             if ((ball_y_pos + `BALL_CENTER_OFFSET) < player_2_y_pos) begin
                 // center pixel of ball is above player; corner hit still possible
-                if ((player_2_y_pos - 1) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= player_2_y_pos + `HIT_ZONE_2) begin
+                if ((player_2_y_pos) <= (ball_y_pos + `BALL_RADIUS) && (ball_y_pos + `BALL_RADIUS) <= player_2_y_pos + `HIT_ZONE_2) begin
                     // Hit at top corner of player
                     ball_direction_left <= 1;
                     ball_direction_top  <= 1;
@@ -370,6 +376,7 @@ module img_generator (
         end
 
         end
+        // OLD: Ball Collision on X_Axis
     end
     
 endmodule

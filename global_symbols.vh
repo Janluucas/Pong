@@ -1,4 +1,4 @@
-`define BALL_RADIUS 9
+`define BALL_RADIUS 9		// Note due to my stupidity: RADIUS means here SIZE
 `define BALL_COLOR 3'b111
 
 `define PLAYER_HEIGHT 60
