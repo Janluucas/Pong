@@ -18,11 +18,14 @@ module img_generator (
 
     reg pause_active_low = 1;   // yes, by default the game is supposed to be paused
 
+    // Pause Logic
     always @(negedge key0) begin
         if (pause_active_low == 0) begin
-            pause_active_low <=1
+            pause_active_low <= 1;
+        end else begin
+            pause_active_low <= 0;
+            last_winner_color <= 3'b000;
         end
-        else pause_active_low <=0
     end
 
     // Player Logic
@@ -149,7 +152,7 @@ module img_generator (
         if (miss_indicator) begin
             // Ball reset logic
             if (
-                (1 <= ball_x_pos && ball_x_pos <= `BALL_SIZE) ||
+                (1 <= ball_x_pos && ball_x_pos <= 5) ||
                 ((`FRAME_WIDTH - `BALL_SIZE) <= ball_x_pos && ball_x_pos <= (`FRAME_WIDTH - 1))
             ) begin
                 ball_x_pos <= `INITIAL_BALL_X_POS;
@@ -212,6 +215,8 @@ module img_generator (
                 if (score_player_2 == 7) begin
                     score_player_1 <= 0;
                     score_player_2 <= 0;
+
+                    last_winner_color <= `PLAYER_2_COLOR;
                 end else begin
                     score_player_2 <= score_player_2 + 1'b1;
                 end
@@ -268,6 +273,8 @@ module img_generator (
                 if (score_player_1 == 7) begin
                     score_player_1 <= 0;
                     score_player_2 <= 0;
+
+                    last_winner_color <= `PLAYER_1_COLOR;
                 end else begin
                     score_player_1 <= score_player_1 + 1'b1;
                 end
@@ -276,5 +283,7 @@ module img_generator (
 
         end
     end
+
+    reg[2:0] last_winner_color = 3'b000;
     
 endmodule
