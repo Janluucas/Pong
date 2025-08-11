@@ -16,7 +16,7 @@ module img_generator (
         .BALL_CLOCK(BALL_CLOCK)
     );
 
-    reg pause_active_low = 0;   // yes, by default the game is supposed to be paused
+    reg pause_active_low = 1;   // yes, by default the game is supposed to be paused
 
     always @(negedge key0) begin
         if (pause_active_low == 0) begin
