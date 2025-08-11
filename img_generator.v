@@ -6,14 +6,8 @@ module img_generator (
     input wire[11:0] y,
     input wire [3:0]  keys_1, // Player 1 inputs
     input wire [3:0]  keys_2, // Player 2 inputs
-
-    /*
-    // FPGA buttons (TODO: suspected to be active low)
     input wire key0,
     input wire key1,
-
-    // FPGA led
-    output wire[7:0] led*/
     output wire[2:0] color
 );
     reg BALL_CLOCK;
@@ -23,6 +17,13 @@ module img_generator (
     );
 
     reg pause_active_low = 0;   // yes, by default the game is supposed to be paused
+
+    always @(negedge key0) begin
+        if (pause_active_low == 0) begin
+            pause_active_low <=1
+        end
+        else pause_active_low <=0
+    end
 
     // Player Logic
     always @(posedge BALL_CLOCK) begin
@@ -58,13 +59,7 @@ module img_generator (
                     player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
                 end
             end
-            else if ((keys_1 == 4'd5) || (keys_2 == 4'd5)) begin
-                pause_active_low <= 1;
-            end        
         end
-        else if ((keys_1 == 4'd5) || (keys_2 == 4'd5)) begin
-            pause_active_low <= 0;
-        end        
     end
 
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
