@@ -163,7 +163,7 @@ module img_generator (
                 score_player_2 <= score_player_2 + 1;
             end
             miss_indicator <= 1;
-        end else if (`PLAYER_2_X_POS < ball_x_pos) begin
+        end else if ((`PLAYER_2_X_POS + `PLAYER_WIDTH) < ball_x_pos) begin
             // Edge case MISS
             if (score_player_1 == 7) begin
                 score_player_2 <= 0;
