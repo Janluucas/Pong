@@ -1,3 +1,5 @@
+// Global symbols and constants for the Pong game
+
 `define BALL_SIZE 8
 `define BALL_CENTER_OFFSET 4
 `define BALL_COLOR 3'b111
