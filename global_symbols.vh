@@ -46,4 +46,3 @@
 
 `define MENU_TEXT_X_POS 100  // z. B. Position nach Bedarf
 `define MENU_TEXT_Y_POS 50
-
