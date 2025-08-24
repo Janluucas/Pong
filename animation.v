@@ -18,18 +18,24 @@ module animation (
 
     reg[1:0] repetitions = 0;
 
+    reg[1:0] delay = 2'b11;
+
     always @(posedge BALL_CLOCK) begin
         if (goal_1_animation_triggered && (repetitions != 2'b0)) begin
-            case (led_r)
-                8'b00000000: led_r <= 8'b10000000;
-                8'b10000000: led_r <= 8'b01000000;
-                8'b01000000: led_r <= 8'b00100000;
-                8'b00100000: led_r <= 8'b00010000;
-                8'b00010000: led_r <= 8'b00001000;
-                8'b00001000: led_r <= 8'b00000100;
-                8'b00000100: led_r <= 8'b00000010;
-                8'b00000010: led_r <= 8'b00000001;
-                8'b00000001: begin
+            casez ({delay, led_r})
+                10'b11_????????: delay <= delay - 1;
+                10'b10_????????: delay <= delay - 1;
+                10'b01_????????: delay <= delay - 1;
+
+                10'b00_00000000: led_r <= 8'b10000000;
+                10'b00_10000000: led_r <= 8'b01000000;
+                10'b00_01000000: led_r <= 8'b00100000;
+                10'b00_00100000: led_r <= 8'b00010000;
+                10'b00_00010000: led_r <= 8'b00001000;
+                10'b00_00001000: led_r <= 8'b00000100;
+                10'b00_00000100: led_r <= 8'b00000010;
+                10'b00_00000010: led_r <= 8'b00000001;
+                10'b00_00000001: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
                 end
@@ -37,16 +43,20 @@ module animation (
             endcase
 
         end else if (goal_2_animation_triggered && (repetitions != 2'b0)) begin
-            case (led_r)
-                8'b00000000: led_r <= 8'b00000001;
-                8'b00000001: led_r <= 8'b00000010;
-                8'b00000010: led_r <= 8'b00000100;
-                8'b00000100: led_r <= 8'b00001000;
-                8'b00001000: led_r <= 8'b00010000;
-                8'b00010000: led_r <= 8'b00100000;
-                8'b00100000: led_r <= 8'b01000000;
-                8'b01000000: led_r <= 8'b10000000;
-                8'b10000000: begin
+            casez ({delay, led_r})
+                10'b11_????????: delay <= delay - 1;
+                10'b10_????????: delay <= delay - 1;
+                10'b01_????????: delay <= delay - 1;
+
+                10'b00_00000000: led_r <= 8'b00000001;
+                10'b00_00000001: led_r <= 8'b00000010;
+                10'b00_00000010: led_r <= 8'b00000100;
+                10'b00_00000100: led_r <= 8'b00001000;
+                10'b00_00001000: led_r <= 8'b00010000;
+                10'b00_00010000: led_r <= 8'b00100000;
+                10'b00_00100000: led_r <= 8'b01000000;
+                10'b00_01000000: led_r <= 8'b10000000;
+                10'b00_10000000: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
                 end 
@@ -54,15 +64,19 @@ module animation (
             endcase
 
         end else if (win_1_animation_triggered && (repetitions != 2'b0)) begin
-            case (led_r)
-                8'b00000000: led_r <= 8'b10000001;
-                8'b10000001: led_r <= 8'b01000010;
-                8'b01000010: led_r <= 8'b00100100;
-                8'b00100100: led_r <= 8'b00011000;
-                8'b00011000: led_r <= 8'b00111000;
-                8'b00111000: led_r <= 8'b01111000;
-                8'b01111000: led_r <= 8'b11111000;
-                8'b11111000: begin
+            casez ({delay, led_r})
+                10'b11_????????: delay <= delay - 1;
+                10'b10_????????: delay <= delay - 1;
+                10'b01_????????: delay <= delay - 1;
+
+                10'b00_00000000: led_r <= 8'b10000001;
+                10'b00_10000001: led_r <= 8'b01000010;
+                10'b00_01000010: led_r <= 8'b00100100;
+                10'b00_00100100: led_r <= 8'b00011000;
+                10'b00_00011000: led_r <= 8'b00111000;
+                10'b00_00111000: led_r <= 8'b01111000;
+                10'b00_01111000: led_r <= 8'b11111000;
+                10'b00_11111000: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
                 end
@@ -70,15 +84,19 @@ module animation (
             endcase
 
         end else if (win_2_animation_triggered && (repetitions != 2'b0)) begin
-            case (led_r)
-                8'b00000000: led_r <= 8'b10000001;
-                8'b10000001: led_r <= 8'b01000010;
-                8'b01000010: led_r <= 8'b00100100;
-                8'b00100100: led_r <= 8'b00011000;
-                8'b00011000: led_r <= 8'b00011100;
-                8'b00011100: led_r <= 8'b00011110;
-                8'b00011110: led_r <= 8'b00011111;
-                8'b00011111: begin
+            casez ({delay, led_r})
+                10'b11_????????: delay <= delay - 1;
+                10'b10_????????: delay <= delay - 1;
+                10'b01_????????: delay <= delay - 1;
+
+                10'b00_00000000: led_r <= 8'b10000001;
+                10'b00_10000001: led_r <= 8'b01000010;
+                10'b00_01000010: led_r <= 8'b00100100;
+                10'b00_00100100: led_r <= 8'b00011000;
+                10'b00_00011000: led_r <= 8'b00011100;
+                10'b00_00011100: led_r <= 8'b00011110;
+                10'b00_00011110: led_r <= 8'b00011111;
+                10'b00_00011111: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
                 end
