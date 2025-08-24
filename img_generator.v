@@ -5,10 +5,8 @@ module img_generator (
     input wire CLOCK_25,
     input wire[11:0] x,              // Current pixel x coordinate
     input wire[11:0] y,              // Current pixel y coordinate
-    input wire [3:0]  keys_1,        // Player 1 input keys
-    input wire [3:0]  keys_2,        // Player 2 input keys
-    input wire        key_pressed_1, // Player 1 key pressed signal
-    input wire        key_pressed_2, // Player 2 key pressed signal
+    input wire [4:0]  keys_1,        // Player 1 input keys
+    input wire [4:0]  keys_2,        // Player 2 input keys
     input wire key0,                 // FPGA key 0
     input wire key1,                 // FPGA key 1
     output wire[2:0] color,          // Output color for current pixel
@@ -83,14 +81,14 @@ module img_generator (
 
         if (!paused) begin //deactivate movement if paused
             // Player 1 movement
-            if ((keys_1 == 4'd2) && key_pressed_1) begin // Up
+            if (keys_1 == {4'd2,1'b1}) begin // Up
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_1_y_pos <= 1;
                 end else begin
                     player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            else if ((keys_1 == 4'd8) && key_pressed_1) begin // Down
+            else if (keys_1 == {4'd8,1'b1}) begin // Down
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
@@ -99,14 +97,14 @@ module img_generator (
             end
 
             // Player 2 movement
-            if ((keys_2 == 4'd2) && key_pressed_2) begin // Up
+            if (keys_2 == {4'd2,1'b1}) begin // Up
                 if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_2_y_pos <= 1;
                 end else begin
                     player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            else if ((keys_2 == 4'd8) && key_pressed_2) begin // Down
+            else if (keys_2 == {4'd8,1'b1}) begin // Down
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
