@@ -13,14 +13,17 @@ module img_generator (
 
 
     reg paused = 1;   // yes, by default the game is supposed to be paused
-    reg pause_request_active_low = 1;
+    reg pause_request = 0;
 
     // Pause Logic
-    always @(negedge key0 or negedge pause_request_active_low) begin
-        if (paused == 0) begin
-            paused <= 1;
-        end else begin
-            paused <= 0;
+    always @(posedge BALL_CLOCK) begin
+        if (pause_request) begin
+            paused <= ~paused;
+            pause_request <= 0;
+        end
+
+        if (~key0) begin
+            pause_request <= 1;
         end
     end
 
