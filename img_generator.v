@@ -9,8 +9,25 @@ module img_generator (
     input wire key0,
     input wire key1,
     output wire[2:0] color
-);
 
+    // For Animation
+    output wire[7:0] led
+);
+    // Animation
+    wire goal_player_1, goal_player_2;
+    wire win_player_1, win_player_2;
+    
+    reg[7:0] led_r;
+    assign led = led_r;
+    
+    animation(
+        .BALL_CLOCK(BALL_CLOCK),
+        .goal_player_1(goal_player_1),
+        .goal_player_2(goal_player_2),
+        .win_player_1(win_player_1),
+        .win_player_2(win_player_2),
+        .led(led_r)
+    );
 
     reg paused = 1;   // yes, by default the game is supposed to be paused
     reg pause_request_active_low = 1; // active low signal to request pause

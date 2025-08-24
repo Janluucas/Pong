@@ -66,7 +66,10 @@ module vga(
   input wire [3:0]  keys_1, // Player 1 inputs
   input wire [3:0]  keys_2, // Player 2 inputs
   input wire key0,
-  input wire key1
+  input wire key1,
+
+  // For Animation
+  output wire[7:0] led
 );  
 
   // Clocks
@@ -97,6 +100,9 @@ module vga(
   reg [2:0] color = 3'b0;
   assign {o_red, o_grn, o_blu} = color;
 
+  reg[7:0] led_r;
+  assign led = led_r;
+
   img_generator ig(
     .CLOCK_25(CLOCK_25),
     .x(x),
@@ -105,7 +111,9 @@ module vga(
     .keys_1(keys_1),
     .keys_2(keys_2),
     .key0(key0),
-    .key1(key1)
+    .key1(key1),
+    
+    .led(led_r)
   );
 
 endmodule 

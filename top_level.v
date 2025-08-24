@@ -37,7 +37,10 @@ module top_level(
           .keys_1(keys_1),
           .keys_2(keys_2),
           .key0(key0),
-          .key1(key1)
+          .key1(key1),
+
+          // For animation
+          .led(led)
 );
 
 //Player1
