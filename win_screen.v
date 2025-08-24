@@ -13,12 +13,10 @@ module win_screen (
     reg out_r;
     assign out = out_r;
 
-
     always @(posedge clk) begin
         case (winner)
             `PLAYER_1_COLOR: begin
-                out_r <= (
-                    // DRAW 'W'
+                out_r <= ( // DRAW 'W'
                     (`WIN_TEXT_PLAYER_1_X_POS <= x) &&
                     (x < (`WIN_TEXT_PLAYER_1_X_POS + 4)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
@@ -43,14 +41,12 @@ module win_screen (
                     (x < (`WIN_TEXT_PLAYER_1_X_POS + 28)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 24))
-                ) || (
-                    // DRAW 'I'
+                ) || ( // DRAW 'I'
                     ((`WIN_TEXT_PLAYER_1_X_POS + 32) <= x) &&
                     (x < (`WIN_TEXT_PLAYER_1_X_POS + 36)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
-                ) || (
-                    // DRAW 'N'
+                ) || ( // DRAW 'N'
                     ((`WIN_TEXT_PLAYER_1_X_POS + 40) <= x) &&
                     (x < (`WIN_TEXT_PLAYER_1_X_POS + 44)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
@@ -79,8 +75,7 @@ module win_screen (
             end
 
             `PLAYER_2_COLOR: begin
-                out_r <= (
-                    // DRAW 'W'
+                out_r <= ( // DRAW 'W'
                     (`WIN_TEXT_PLAYER_2_X_POS <= x) &&
                     (x < (`WIN_TEXT_PLAYER_2_X_POS + 4)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
@@ -105,14 +100,12 @@ module win_screen (
                     (x < (`WIN_TEXT_PLAYER_2_X_POS + 28)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 24))
-                ) || (
-                    // DRAW 'I'
+                ) || ( // DRAW 'I'
                     ((`WIN_TEXT_PLAYER_2_X_POS + 32) <= x) &&
                     (x < (`WIN_TEXT_PLAYER_2_X_POS + 36)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
-                ) || (
-                    // DRAW 'N'
+                ) || ( // DRAW 'N'
                     ((`WIN_TEXT_PLAYER_2_X_POS + 40) <= x) &&
                     (x < (`WIN_TEXT_PLAYER_2_X_POS + 44)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
