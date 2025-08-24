@@ -10,27 +10,32 @@ module img_generator (
     input wire key1,
     output wire[2:0] color
 );
+
+
+    reg paused = 1;   // yes, by default the game is supposed to be paused
+    reg pause_request_active_low = 1;
+
+    // Pause Logic
+    always @(negedge key0 or negedge pause_request_active_low) begin
+        if (paused == 0) begin
+            paused <= 1;
+        end else begin
+            paused <= 0;
+        end
+    end
+
     reg BALL_CLOCK;
     ball_clock ballzzz(
         .CLOCK_25(CLOCK_25),
         .BALL_CLOCK(BALL_CLOCK)
     );
 
-    reg paused = 1;   // yes, by default the game is supposed to be paused
-
-    // Pause Logic
-    always @(negedge key0) begin
-        if (paused == 0) begin
-            paused <= 1;
-        end else begin
-            paused <= 0;
-            last_winner_color <= 3'b000;
-        end
-    end
+    
 
     // Player Logic
     always @(posedge BALL_CLOCK) begin
         if (paused == 0) begin
+            pause_request_active_low <= 1;
             // Player 1 Movement Logic
             if (keys_1 == 4'd2) begin
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
@@ -217,6 +222,7 @@ module img_generator (
                     score_player_2 <= 0;
                     
                     last_winner_color <= `PLAYER_2_COLOR;
+                    pause_request_active_low <= 0;
                 end else begin
                     score_player_2 <= score_player_2 + 1'b1;
                 end
@@ -275,6 +281,8 @@ module img_generator (
                     score_player_2 <= 0;
                     
                     last_winner_color <= `PLAYER_1_COLOR;
+                    pause_request_active_low <= 0;
+
                 end else begin
                     score_player_1 <= score_player_1 + 1'b1;
                 end
