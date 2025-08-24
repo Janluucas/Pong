@@ -38,12 +38,18 @@ module img_generator (
 
     reg paused = 1;   // yes, by default the game is supposed to be paused
     reg pause_request_active_low = 1; // active low signal to request pause
+    reg reset = 0;
 
     // Pause Logic
-    always @(negedge key0 or negedge pause_request_active_low) begin
+    always @(negedge key0 or negedge key1 or negedge pause_request_active_low) begin
         if (!pause_request_active_low) begin
             paused <= 1;
+            reset <=1;
+        end else if (!key1) begin
+            reset <= 1;
+            paused <= 1;
         end else begin
+            reset <= 0;
             paused <= ~paused;
         end
     end
@@ -58,6 +64,11 @@ module img_generator (
 
     // Player Logic
     always @(posedge BALL_CLOCK) begin
+        if (reset) begin
+            player_1_y_pos <= `INITIAL_PLAYER_Y_POS;
+            player_2_y_pos <= `INITIAL_PLAYER_Y_POS;
+        end
+
         if (!paused) begin
             // Player 1 Movement Logic
             if (keys_1 == 4'd2) begin
@@ -158,6 +169,18 @@ module img_generator (
     always@(posedge BALL_CLOCK) begin
         current_ball_movement_offset <= current_ball_x_movement * current_ball_y_movement;
         pause_request_active_low <= 1;
+
+        if (reset) begin
+            // Reset everything
+            ball_x_pos <= `INITIAL_BALL_X_POS;
+            ball_y_pos <= `INITIAL_BALL_Y_POS;
+            score_player_1 <= 0;
+            score_player_2 <= 0;
+            current_ball_x_movement <= 4;
+            current_ball_y_movement <= 0;
+            ball_direction_left <= 0;
+            ball_direction_top <= 0;
+        end
 
         if (!paused) begin
             case (ball_direction_left)
