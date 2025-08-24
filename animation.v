@@ -77,7 +77,7 @@ module animation (
                     led_r <= 8'b11111000;
                     delay <= 2'b11;
                 end
-                11'b00_11111000: begin
+                10'b11_11111000: begin
                     led_r <= 8'b00000000;
                     delay <= delay - 1;
                     repetitions <= repetitions - 1;
@@ -101,7 +101,7 @@ module animation (
                     led_r <= 8'b00011111;
                     delay <= 2'b11;
                 end
-                11'b00_00011111: begin
+                10'b11_00011111: begin
                     led_r <= 8'b00000000;
                     delay <= delay - 1;
                     repetitions <= repetitions - 1;
