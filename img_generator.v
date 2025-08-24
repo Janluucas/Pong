@@ -133,9 +133,9 @@ module img_generator (
     // Ball Logic
     always@(posedge BALL_CLOCK) begin
         current_ball_movement_offset <= current_ball_x_movement * current_ball_y_movement;
+        pause_request_active_low <= 1;
 
         if (!paused) begin
-            pause_request_active_low <= 1;
             case (ball_direction_left)
                 0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
                 1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
