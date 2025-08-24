@@ -32,6 +32,8 @@ module top_level(
           .o_blu	(GPIO_003),
           .keys_1(keys_1),
           .keys_2(keys_2),
+          .key_pressed_1(key_pressed_1),
+          .key_pressed_2(key_pressed_2),
           .key0(key0),
           .key1(key1),
 
@@ -44,7 +46,8 @@ module top_level(
     .clk(CLOCK_25), // Use 25 MHz clock for scanning, as we use it everywhere else, to stay in synch
     .cols({GPIO_009, GPIO_011, GPIO_013, GPIO_015}), // Column inputs
     .rows({GPIO_017, GPIO_019, GPIO_021, GPIO_023}), // Row outputs
-    .keycode(keys_1) // Output keycode
+    .keycode(keys_1), // Output keycode
+    .key_pressed(key_pressed_1) // Output key pressed signal
   );
 
   // Player 2 keypad scanner instantiation
@@ -52,7 +55,8 @@ module top_level(
     .clk(CLOCK_25), // Use 25 MHz clock for scanning, as we use it everywhere else, to stay in synch
     .cols({GPIO_008, GPIO_010, GPIO_012, GPIO_014}), // Column inputs
     .rows({GPIO_016, GPIO_018, GPIO_020, GPIO_022}), // Row outputs
-    .keycode(keys_2) // Output keycode
+    .keycode(keys_2), // Output keycode
+    .key_pressed(key_pressed_2) // Output key pressed signal
   );
 
 endmodule

@@ -2,7 +2,8 @@ module keypad(
     input  wire       clk,
     input  wire [3:0] cols,
     output reg  [3:0] rows,
-    output reg  [3:0] keycode
+    output reg  [3:0] keycode,
+	output reg  key_pressed
 );
 
 	/*********************************************************************
@@ -39,23 +40,25 @@ module keypad(
 	// keycode-Schaltung
 	always @(posedge clk) begin
 		case ({~rows, ~cols})
-			8'b0001_0001: keycode <= 4'd1;	// '1'
-			8'b0001_0010: keycode <= 4'd2; 	// '2'
-			8'b0001_0100: keycode <= 4'd3;	// '3'
-			8'b0001_1000: keycode <= 4'd10;	// 'A'
-			8'b0010_0001: keycode <= 4'd4;	// '4'
-			8'b0010_0010: keycode <= 4'd5;	// '5'
-			8'b0010_0100: keycode <= 4'd6;	// '6'
-			8'b0010_1000: keycode <= 4'd11;	// 'B'
-			8'b0100_0001: keycode <= 4'd7;	// '7'
-			8'b0100_0010: keycode <= 4'd8;	// '8'
-			8'b0100_0100: keycode <= 4'd9;	// '9'
-			8'b0100_1000: keycode <= 4'd12;	// 'C'
-			8'b1000_0001: keycode <= 4'd14;	// '*'
-			8'b1000_0010: keycode <= 4'd0;	// '0'
-			8'b1000_0100: keycode <= 4'd15;	// '#'
-			8'b1000_1000: keycode <= 4'd13;	// 'D'
-			default:      keycode <= keycode;
+			8'b0001_0001: begin keycode <= 4'd1; key_pressed <= 1; end// '1'
+			8'b0001_0010: begin keycode <= 4'd2; key_pressed <= 1; end 	// '2'
+			8'b0001_0100: begin keycode <= 4'd3; key_pressed <= 1; end	// '3'
+			8'b0001_1000: begin keycode <= 4'd10; key_pressed <= 1; end	// 'A'
+			8'b0010_0001: begin keycode <= 4'd4; key_pressed <= 1; end	// '4'
+			8'b0010_0010: begin keycode <= 4'd5; key_pressed <= 1; end	// '5'
+			8'b0010_0100: begin keycode <= 4'd6; key_pressed <= 1; end	// '6'
+			8'b0010_1000: begin keycode <= 4'd11; key_pressed <= 1; end	// 'B'
+			8'b0100_0001: begin keycode <= 4'd7; key_pressed <= 1; end	// '7'
+			8'b0100_0010: begin keycode <= 4'd8; key_pressed <= 1; end	// '8'
+			8'b0100_0100: begin keycode <= 4'd9; key_pressed <= 1; end	// '9'
+			8'b0100_1000: begin keycode <= 4'd12; key_pressed <= 1; end	// 'C'
+			8'b1000_0001: begin keycode <= 4'd14; key_pressed <= 1; end	// '*'
+			8'b1000_0010: begin keycode <= 4'd0; key_pressed <= 1; end	// '0'
+			8'b1000_0100: begin keycode <= 4'd15; key_pressed <= 1; end	// '#'
+			8'b1000_1000: begin keycode <= 4'd13; key_pressed <= 1; end	// 'D'
+
+			// To-Do: Detect key release
+			default:      begin keycode <= keycode;  key_pressed <= 0; end
 		endcase
 	end
 
