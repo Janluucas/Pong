@@ -41,3 +41,7 @@
 `define WIN_TEXT_PLAYER_1_X_POS 60
 `define WIN_TEXT_PLAYER_2_X_POS 520
 `define WIN_TEXT_Y_POS 194
+
+`define MENU_TEXT_X_POS 100  // z. B. Position nach Bedarf
+`define MENU_TEXT_Y_POS 50
+

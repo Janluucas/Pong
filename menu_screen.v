@@ -16,52 +16,62 @@ module win_screen (
     always @(posedge clk) begin
         if (winner) begin
             out_r <= (
-                // === 'M' (schöner, symmetrisch, 16px breit) ===
+                // === 'M' (breiter, 18px) ===
                 ((`MENU_TEXT_X_POS <= x) &&
-                (x < `MENU_TEXT_X_POS + 3) &&
-                (`MENU_TEXT_Y_POS <= y) &&
-                (y < `MENU_TEXT_Y_POS + 28)) ||
+                 (x < `MENU_TEXT_X_POS + 3) &&
+                 (`MENU_TEXT_Y_POS <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 28)) ||
 
                 ((`MENU_TEXT_X_POS + 3 <= x) &&
-                (x < `MENU_TEXT_X_POS + 5) &&
-                (`MENU_TEXT_Y_POS + 4 <= y) &&
-                (y < `MENU_TEXT_Y_POS + 12)) ||
+                 (x < `MENU_TEXT_X_POS + 5) &&
+                 (`MENU_TEXT_Y_POS + 4 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 12)) ||
 
                 ((`MENU_TEXT_X_POS + 5 <= x) &&
-                (x < `MENU_TEXT_X_POS + 7) &&
-                (`MENU_TEXT_Y_POS + 8 <= y) &&
-                (y < `MENU_TEXT_Y_POS + 20)) ||
+                 (x < `MENU_TEXT_X_POS + 7) &&
+                 (`MENU_TEXT_Y_POS + 8 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 20)) ||
 
                 ((`MENU_TEXT_X_POS + 7 <= x) &&
-                (x < `MENU_TEXT_X_POS + 9) &&
-                (`MENU_TEXT_Y_POS + 4 <= y) &&
-                (y < `MENU_TEXT_Y_POS + 12)) ||
+                 (x < `MENU_TEXT_X_POS + 9) &&
+                 (`MENU_TEXT_Y_POS + 12 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 16)) ||
 
                 ((`MENU_TEXT_X_POS + 9 <= x) &&
-                (x < `MENU_TEXT_X_POS + 12) &&
-                (`MENU_TEXT_Y_POS <= y) &&
-                (y < `MENU_TEXT_Y_POS + 28)) ||
+                 (x < `MENU_TEXT_X_POS + 11) &&
+                 (`MENU_TEXT_Y_POS + 8 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 20)) ||
+
+                ((`MENU_TEXT_X_POS + 11 <= x) &&
+                 (x < `MENU_TEXT_X_POS + 13) &&
+                 (`MENU_TEXT_Y_POS + 4 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 12)) ||
+
+                ((`MENU_TEXT_X_POS + 13 <= x) &&
+                 (x < `MENU_TEXT_X_POS + 16) &&
+                 (`MENU_TEXT_Y_POS <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 28)) ||
 
                 // === 'E' ===
-                ((`MENU_TEXT_X_POS + 16 <= x) &&
-                (x < `MENU_TEXT_X_POS + 20) &&
-                (`MENU_TEXT_Y_POS <= y) &&
-                (y < `MENU_TEXT_Y_POS + 28)) ||
-
                 ((`MENU_TEXT_X_POS + 20 <= x) &&
-                (x < `MENU_TEXT_X_POS + 28) &&
-                (`MENU_TEXT_Y_POS <= y) &&
-                (y < `MENU_TEXT_Y_POS + 4)) ||
+                 (x < `MENU_TEXT_X_POS + 24) &&
+                 (`MENU_TEXT_Y_POS <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 28)) ||
 
-                ((`MENU_TEXT_X_POS + 20 <= x) &&
-                (x < `MENU_TEXT_X_POS + 28) &&
-                (`MENU_TEXT_Y_POS + 12 <= y) &&
-                (y < `MENU_TEXT_Y_POS + 16)) ||
+                ((`MENU_TEXT_X_POS + 24 <= x) &&
+                 (x < `MENU_TEXT_X_POS + 32) &&
+                 (`MENU_TEXT_Y_POS <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 4)) ||
 
-                ((`MENU_TEXT_X_POS + 20 <= x) &&
-                (x < `MENU_TEXT_X_POS + 28) &&
-                (`MENU_TEXT_Y_POS + 24 <= y) &&
-                (y < `MENU_TEXT_Y_POS + 28)) ||
+                ((`MENU_TEXT_X_POS + 24 <= x) &&
+                 (x < `MENU_TEXT_X_POS + 32) &&
+                 (`MENU_TEXT_Y_POS + 12 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 16)) ||
+
+                ((`MENU_TEXT_X_POS + 24 <= x) &&
+                 (x < `MENU_TEXT_X_POS + 32) &&
+                 (`MENU_TEXT_Y_POS + 24 <= y) &&
+                 (y < `MENU_TEXT_Y_POS + 28)) ||
 
                 // === 'N' (schön, 16px breit, diagonale) ===
                 ((`MENU_TEXT_X_POS + 32 <= x) &&
@@ -109,5 +119,4 @@ module win_screen (
             out_r <= 0;
         end
     end
-
 endmodule
