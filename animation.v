@@ -138,6 +138,8 @@ module animation (
 
             if (win_player_1 || win_player_2 || goal_player_1 || goal_player_2) begin
                 repetitions <= 2'b01;
+            end else begin
+                repetitions <= 2'b00;
             end
         end
     end
