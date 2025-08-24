@@ -40,4 +40,4 @@
 
 `define WIN_TEXT_PLAYER_1_X_POS = 60
 `define WIN_TEXT_PLAYER_2_X_POS = 520
-`define WIN_TEXT_Y_POS = 466
+`define WIN_TEXT_Y_POS = 194
