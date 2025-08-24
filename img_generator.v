@@ -37,7 +37,7 @@ module img_generator (
     end
 
     reg paused = 1;   // yes, by default the game is supposed to be paused
-    reg pause_request_active_low = 1; // active low signal to request pause
+    reg pause_request_active_low = 1; // active low signal to request pause and reset of game after win
     reg reset = 0;
 
     // Pause Logic
