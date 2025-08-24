@@ -16,21 +16,21 @@ module img_generator (
         .BALL_CLOCK(BALL_CLOCK)
     );
 
-    reg pause_active_low = 1;   // yes, by default the game is supposed to be paused
+    reg paused = 1;   // yes, by default the game is supposed to be paused
 
     // Pause Logic
     always @(negedge key0) begin
-        if (pause_active_low == 0) begin
-            pause_active_low <= 1;
+        if (paused == 0) begin
+            paused <= 1;
         end else begin
-            pause_active_low <= 0;
+            paused <= 0;
             last_winner_color <= 3'b000;
         end
     end
 
     // Player Logic
     always @(posedge BALL_CLOCK) begin
-        if (pause_active_low == 0) begin
+        if (paused == 0) begin
             // Player 1 Movement Logic
             if (keys_1 == 4'd2) begin
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
@@ -130,7 +130,7 @@ module img_generator (
     always@(posedge BALL_CLOCK) begin
         current_ball_movement_offset <= current_ball_x_movement * current_ball_y_movement;
 
-        if (pause_active_low == 0) begin
+        if (paused == 0) begin
             case (ball_direction_left)
                 0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
                 1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
