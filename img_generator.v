@@ -104,6 +104,14 @@ module img_generator (
         end
     end
 
+    win_screen ws(
+        .clk(CLOCK_25),
+        .x(x), .y(y),
+        .winner(last_winner_color),
+        .out(win_out)
+    );
+    reg win_out = 0;
+
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
     reg[11:0] ball_y_pos = `INITIAL_BALL_Y_POS;
 
@@ -126,6 +134,9 @@ module img_generator (
         // Draw Score 2
         score_2_out
     ) ? `PLAYER_2_COLOR : (
+        // Draw Win Screem
+        win_out
+    ) ? last_winner_color : (
         // Draw Player 1
         x >= `PLAYER_1_X_POS && x <= (`PLAYER_1_X_POS + `PLAYER_WIDTH) &&
         y >= player_1_y_pos && y <= (player_1_y_pos + `PLAYER_HEIGHT)
