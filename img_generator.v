@@ -1,19 +1,20 @@
 `include "global_symbols.vh"
 
+// Image generator module for Pong game
 module img_generator (
     input wire CLOCK_25,
-    input wire[11:0] x, 
-    input wire[11:0] y,
-    input wire [3:0]  keys_1, // Player 1 inputs
-    input wire [3:0]  keys_2, // Player 2 inputs
-    input wire key0,
-    input wire key1,
-    output wire[2:0] color,
+    input wire[11:0] x,              // Current pixel x coordinate
+    input wire[11:0] y,              // Current pixel y coordinate
+    input wire [3:0]  keys_1,        // Player 1 input keys
+    input wire [3:0]  keys_2,        // Player 2 input keys
+    input wire key0,                 // FPGA key 0
+    input wire key1,                 // FPGA key 1
+    output wire[2:0] color,          // Output color for current pixel
 
-    // For Animation
-    output wire[7:0] led
+    output wire[7:0] led             // LED output for animation
 );
-    // Animation
+
+    // Animation state registers
     reg goal_player_1 = 0;
     reg goal_player_2 = 0;
     reg win_player_1  = 0;
@@ -22,6 +23,7 @@ module img_generator (
     reg[7:0] led_r;
     assign led = led_r;
     
+    // Animation module instantiation
     animation(
         .BALL_CLOCK(BALL_CLOCK),
         .goal_player_1(goal_player_1),
@@ -31,71 +33,79 @@ module img_generator (
         .led(led_r)
     );
 
+    // Last winner color register
+    reg[2:0] last_winner_color = 3'b000;
+
+    // Update win state on BALL_CLOCK
     always @(posedge BALL_CLOCK) begin
         win_player_1 <= last_winner_color == `PLAYER_1_COLOR;
         win_player_2 <= last_winner_color == `PLAYER_2_COLOR;
     end
 
-    reg paused = 1;   // yes, by default the game is supposed to be paused
-    reg pause_request_active_low = 1; // active low signal to request pause and reset of game after win
+    reg paused = 1;   // Game starts paused
+    reg pause_request_active_low = 1; // Pause/reset request (active low)
     reg reset = 0;
 
-    // Pause Logic
+    // Pause and reset logic (triggered on key press or by pause request, send if a player wins)
     always @(negedge key0 or negedge key1 or negedge pause_request_active_low) begin
-        if (!pause_request_active_low) begin
+        if (!pause_request_active_low) begin // pause and reset on win
             paused <= 1;
             reset <=1;
-        end else if (!key1) begin
+        end else if (!key1) begin   // reset game and pause it if key1 on FPGA is pressed
             reset <= 1;
             paused <= 1;
-        end else begin
+        end else begin  // toggle pause state if key0 on FPGA is pressed
             reset <= 0;
             paused <= ~paused;
         end
     end
 
+    // Ball movement clock generator
     reg BALL_CLOCK;
     ball_clock ballzzz(
         .CLOCK_25(CLOCK_25),
         .BALL_CLOCK(BALL_CLOCK)
     );
 
-    
+    // Player positions and movement logic
 
-    // Player Logic
+    // Player positions
+    reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
+    reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
+
     always @(posedge BALL_CLOCK) begin
-        if (reset) begin
+        if (reset) begin // Reset player positions if reset is triggered
             player_1_y_pos <= `INITIAL_PLAYER_Y_POS;
             player_2_y_pos <= `INITIAL_PLAYER_Y_POS;
         end
 
-        if (!paused) begin
-            // Player 1 Movement Logic
-            if (keys_1 == 4'd2) begin
-                if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin
+        if (!paused) begin //deactivate movement if paused
+            // Player 1 movement
+            if (keys_1 == 4'd2) begin // Up
+                if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_1_y_pos <= 1;
                 end else begin
                     player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            else if (keys_1 == 4'd8) begin
-                if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin
+            else if (keys_1 == 4'd8) begin // Down
+                if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
                     player_1_y_pos <= player_1_y_pos + `DEFAULT_PLAYER_SPEED;
                 end
             end
 
-            // Player 2 Movement Logic
-            if (keys_2 == 4'd2) begin
-                if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin
+            // Player 2 movement
+            if (keys_2 == 4'd2) begin // Up
+                if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_2_y_pos <= 1;
                 end else begin
                     player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            else if (keys_2 == 4'd8) begin
-                if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin
+            else if (keys_2 == 4'd8) begin // Down
+                if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
                     player_2_y_pos <= player_2_y_pos + `DEFAULT_PLAYER_SPEED;
@@ -104,6 +114,7 @@ module img_generator (
         end
     end
 
+    // Win screen generator
     win_screen ws(
         .clk(CLOCK_25),
         .x(x), .y(y),
@@ -112,17 +123,19 @@ module img_generator (
     );
     reg win_out = 0;
 
+    // Ball position and movement registers
     reg[11:0] ball_x_pos = `INITIAL_BALL_X_POS;
     reg[11:0] ball_y_pos = `INITIAL_BALL_Y_POS;
 
-    reg ball_direction_top  = 0;
-    reg ball_direction_left = 0;
+    reg ball_direction_top  = 0;     // Ball vertical direction
+    reg ball_direction_left = 0;     // Ball horizontal direction
 
-    reg[2:0] current_ball_x_movement = 4;
-    reg[2:0] current_ball_y_movement = 0;
+    reg[2:0] current_ball_x_movement = 4; // Ball speed X
+    reg[2:0] current_ball_y_movement = 0; // Ball speed Y
 
-    reg[2:0] ball_color = 3'b111;
+    reg[2:0] ball_color = 3'b111;    // Ball color
 
+    // Color assignment for each pixel (priority: ball > score > win > players > border)
     assign color = (
         // Draw Ball
         x >= ball_x_pos && x <= (ball_x_pos + `BALL_SIZE) &&
@@ -134,7 +147,7 @@ module img_generator (
         // Draw Score 2
         score_2_out
     ) ? `PLAYER_2_COLOR : (
-        // Draw Win Screem
+        // Draw Win Screen
         win_out
     ) ? last_winner_color : (
         // Draw Player 1
@@ -144,16 +157,15 @@ module img_generator (
         // Draw Player 2
         x >= `PLAYER_2_X_POS && x <= (`PLAYER_2_X_POS + `PLAYER_WIDTH) &&
         y >= player_2_y_pos && y <= (player_2_y_pos + `PLAYER_HEIGHT)
-    ) ? `PLAYER_2_COLOR : 3'b000 | 3*{(x == 640 || x == 1 || y == 480 || y == 1) ? 3'b010 : 3'b000};
+    ) ? `PLAYER_2_COLOR : 3'b000 | 3*{(x == 640 || x == 1 || y == 480 || y == 1) ? 3'b010 : 3'b000}; // Draw Border
 
-    reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
-    reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
 
+    // Score registers
     reg[2:0] score_player_1 = 0;
     reg[2:0] score_player_2 = 0;
     reg[2:0] winner_color = 3'b000;
 
-    reg miss_indicator = 0;
+    reg miss_indicator = 0; // Indicates if player missed ball
 
     reg score_1_out;
     reg score_2_out;
@@ -174,15 +186,16 @@ module img_generator (
         .out(score_2_out)
     );
 
+    // Current ball movement offset (for collision detection, as ball speed may vary)
     reg[6:0] current_ball_movement_offset = 0;
 
-    // Ball Logic
+    // Ball movement and collision logic
     always@(posedge BALL_CLOCK) begin
         current_ball_movement_offset <= current_ball_x_movement * current_ball_y_movement;
         pause_request_active_low <= 1;
 
         if (reset) begin
-            // Reset everything
+            // Reset ball and scores, if reset is triggered
             ball_x_pos <= `INITIAL_BALL_X_POS;
             ball_y_pos <= `INITIAL_BALL_Y_POS;
             score_player_1 <= 0;
@@ -193,12 +206,12 @@ module img_generator (
             ball_direction_top <= 0;
         end
 
-        if (!paused) begin
+        if (!paused) begin // Deactivate ball movement if paused
             if (!miss_indicator) begin
-                last_winner_color <= 3'b000; // reset last winner color
+                last_winner_color <= 3'b000; // Reset last winner color
             end
 
-
+            // Ball movement (X and Y)
             case (ball_direction_left)
                 0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
                 1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
@@ -210,7 +223,7 @@ module img_generator (
             endcase
         end
 
-        // Ball Collision on Y-Axis
+        // Ball collision with top/bottom walls (Y axis)
         if ((ball_y_pos >= 0) && (ball_y_pos <= `COLLISION_OFFSET)) begin
             ball_direction_top <= 0;
         end else if ((`FRAME_HEIGHT - `COLLISION_OFFSET) <= (ball_y_pos + `BALL_SIZE) && (ball_y_pos + `BALL_SIZE) <= `FRAME_HEIGHT) begin
@@ -218,13 +231,13 @@ module img_generator (
         end
 
         if (miss_indicator) begin
-            // Ball reset logic
+            // Ball reset after miss
             if (
                 (1 <= ball_x_pos && ball_x_pos <= 5) ||
                 ((`FRAME_WIDTH - `BALL_SIZE) <= ball_x_pos && ball_x_pos <= (`FRAME_WIDTH - 1))
             ) begin
                 ball_x_pos <= `INITIAL_BALL_X_POS;
-                ball_y_pos <= (ball_x_pos < `HALF_FRAME_WIDTH) ? player_1_y_pos + `HALF_PLAYER_HEIGHT - `BALL_CENTER_OFFSET : player_2_y_pos + `HALF_PLAYER_HEIGHT - `BALL_CENTER_OFFSET; // in prev. version: `INITIAL_BALL_Y_POS;
+                ball_y_pos <= (ball_x_pos < `HALF_FRAME_WIDTH) ? player_1_y_pos + `HALF_PLAYER_HEIGHT - `BALL_CENTER_OFFSET : player_2_y_pos + `HALF_PLAYER_HEIGHT - `BALL_CENTER_OFFSET;
                 current_ball_y_movement <= 0;
                 current_ball_x_movement <= 4;
                 miss_indicator <= 0;
@@ -235,11 +248,11 @@ module img_generator (
             end
         end else begin
         
-        // Ball Collision on X_Axis
+        // Ball collision with players (X axis)
         
-        // Check whether ball is on height level of player 1
+        // Collision with player 1 (Check whether ball is on height level of player 1)
         if (((`PLAYER_1_X_POS + `PLAYER_WIDTH) <= ball_x_pos) && (ball_x_pos <= (`PLAYER_1_X_POS + `PLAYER_WIDTH + current_ball_x_movement))) begin
-            // Ball intersects hitbox
+            // Check which part of player is hit for angle/speed
             if (((player_1_y_pos - `CORNER_HIT_ZONE_SIZE) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < player_1_y_pos)) begin
                 ball_direction_left <= 0;
                 ball_direction_top <= 1;
@@ -301,9 +314,7 @@ module img_generator (
                 if (score_player_2 == 7) begin
                     score_player_1 <= 0;
                     score_player_2 <= 0;
-                    
                     last_winner_color <= `PLAYER_2_COLOR;
-                    
                 end else begin
                     score_player_2 <= score_player_2 + 1'b1;
                     goal_player_2 <= 1;
@@ -311,9 +322,10 @@ module img_generator (
             end
         end
 
-        // Check whether ball is on height level of player 2
+        // Collision with player 2 (Check whether ball is on height level of player 2)
+        else
         if (((`PLAYER_2_X_POS - current_ball_x_movement) <= (ball_x_pos + `BALL_SIZE)) && ((ball_x_pos + `BALL_SIZE) <= `PLAYER_2_X_POS)) begin
-            // Ball intersects hitbox
+            // Check which part of player is hit for angle/speed
             if (((player_2_y_pos - `CORNER_HIT_ZONE_SIZE) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < player_2_y_pos)) begin
                 ball_direction_left <= 1;
                 ball_direction_top <= 1;
@@ -387,7 +399,4 @@ module img_generator (
 
         end
     end
-
-    reg[2:0] last_winner_color = 3'b000;
-    
 endmodule
