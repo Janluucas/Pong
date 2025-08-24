@@ -8,7 +8,7 @@ module img_generator (
     input wire [3:0]  keys_2, // Player 2 inputs
     input wire key0,
     input wire key1,
-    output wire[2:0] color
+    output wire[2:0] color,
 
     // For Animation
     output wire[7:0] led
