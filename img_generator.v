@@ -83,14 +83,14 @@ module img_generator (
 
         if (!paused) begin //deactivate movement if paused
             // Player 1 movement
-            if (keys_1 == 4'd2 && key_pressed_1) begin // Up
+            if ((keys_1 == 4'd2) && key_pressed_1) begin // Up
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_1_y_pos <= 1;
                 end else begin
                     player_1_y_pos <= player_1_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            else if (keys_1 == 4'd8 && key_pressed_1) begin // Down
+            else if ((keys_1 == 4'd8) && key_pressed_1) begin // Down
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
@@ -99,14 +99,14 @@ module img_generator (
             end
 
             // Player 2 movement
-            if (keys_2 == 4'd2 && key_pressed_2) begin // Up
+            if ((keys_2 == 4'd2) && key_pressed_2) begin // Up
                 if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_2_y_pos <= 1;
                 end else begin
                     player_2_y_pos <= player_2_y_pos - `DEFAULT_PLAYER_SPEED; 
                 end
             end
-            else if (keys_2 == 4'd8 && key_pressed_2) begin // Down
+            else if ((keys_2 == 4'd8) && key_pressed_2) begin // Down
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin

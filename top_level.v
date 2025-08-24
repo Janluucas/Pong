@@ -20,6 +20,8 @@ module top_level(
   // Registers to store keypad keycodes for both players
   reg [3:0] keys_1 = 0; // Player 1 keycode
   reg [3:0] keys_2 = 0; // Player 2 keycode
+  reg key_pressed_1 = 0; // Player 1 key pressed signal
+  reg key_pressed_2 = 0; // Player 2 key pressed signal
 
   // VGA Output module instantiation
   vga mon(
