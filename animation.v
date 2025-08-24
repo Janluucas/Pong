@@ -27,14 +27,14 @@ module animation (
                 10'b10_????????: delay <= delay - 1;
                 10'b01_????????: delay <= delay - 1;
 
-                10'b00_00000000: led_r <= begin 8'b10000000; delay <= 2'b11; end
-                10'b00_10000000: led_r <= begin 8'b01000000; delay <= 2'b11; end
-                10'b00_01000000: led_r <= begin 8'b00100000; delay <= 2'b11; end
-                10'b00_00100000: led_r <= begin 8'b00010000; delay <= 2'b11; end
-                10'b00_00010000: led_r <= begin 8'b00001000; delay <= 2'b11; end
-                10'b00_00001000: led_r <= begin 8'b00000100; delay <= 2'b11; end
-                10'b00_00000100: led_r <= begin 8'b00000010; delay <= 2'b11; end
-                10'b00_00000010: led_r <= begin 8'b00000001; delay <= 2'b11; end
+                10'b00_00000000: begin led_r <= 8'b10000000; delay <= 2'b11; end
+                10'b00_10000000: begin led_r <= 8'b01000000; delay <= 2'b11; end
+                10'b00_01000000: begin led_r <= 8'b00100000; delay <= 2'b11; end
+                10'b00_00100000: begin led_r <= 8'b00010000; delay <= 2'b11; end
+                10'b00_00010000: begin led_r <= 8'b00001000; delay <= 2'b11; end
+                10'b00_00001000: begin led_r <= 8'b00000100; delay <= 2'b11; end
+                10'b00_00000100: begin led_r <= 8'b00000010; delay <= 2'b11; end
+                10'b00_00000010: begin led_r <= 8'b00000001; delay <= 2'b11; end
                 10'b00_00000001: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
@@ -48,14 +48,14 @@ module animation (
                 10'b10_????????: delay <= delay - 1;
                 10'b01_????????: delay <= delay - 1;
 
-                10'b00_00000000: led_r <= begin 8'b00000001; delay <= 2'b11; end
-                10'b00_00000001: led_r <= begin 8'b00000010; delay <= 2'b11; end
-                10'b00_00000010: led_r <= begin 8'b00000100; delay <= 2'b11; end
-                10'b00_00000100: led_r <= begin 8'b00001000; delay <= 2'b11; end
-                10'b00_00001000: led_r <= begin 8'b00010000; delay <= 2'b11; end
-                10'b00_00010000: led_r <= begin 8'b00100000; delay <= 2'b11; end
-                10'b00_00100000: led_r <= begin 8'b01000000; delay <= 2'b11; end
-                10'b00_01000000: led_r <= begin 8'b10000000; delay <= 2'b11; end
+                10'b00_00000000: begin led_r <= 8'b00000001; delay <= 2'b11; end
+                10'b00_00000001: begin led_r <= 8'b00000010; delay <= 2'b11; end
+                10'b00_00000010: begin led_r <= 8'b00000100; delay <= 2'b11; end
+                10'b00_00000100: begin led_r <= 8'b00001000; delay <= 2'b11; end
+                10'b00_00001000: begin led_r <= 8'b00010000; delay <= 2'b11; end
+                10'b00_00010000: begin led_r <= 8'b00100000; delay <= 2'b11; end
+                10'b00_00100000: begin led_r <= 8'b01000000; delay <= 2'b11; end
+                10'b00_01000000: begin led_r <= 8'b10000000; delay <= 2'b11; end
                 10'b00_10000000: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
@@ -69,13 +69,13 @@ module animation (
                 10'b10_????????: delay <= delay - 1;
                 10'b01_????????: delay <= delay - 1;
 
-                10'b00_00000000: led_r <= begin 8'b10000001; delay <= 2'b11; end
-                10'b00_10000001: led_r <= begin 8'b01000010; delay <= 2'b11; end
-                10'b00_01000010: led_r <= begin 8'b00100100; delay <= 2'b11; end
-                10'b00_00100100: led_r <= begin 8'b00011000; delay <= 2'b11; end
-                10'b00_00011000: led_r <= begin 8'b00111000; delay <= 2'b11; end
-                10'b00_00111000: led_r <= begin 8'b01111000; delay <= 2'b11; end
-                10'b00_01111000: led_r <= begin 8'b11111000; delay <= 2'b11; end
+                10'b00_00000000: begin led_r <= 8'b10000001; delay <= 2'b11; end
+                10'b00_10000001: begin led_r <= 8'b01000010; delay <= 2'b11; end
+                10'b00_01000010: begin led_r <= 8'b00100100; delay <= 2'b11; end
+                10'b00_00100100: begin led_r <= 8'b00011000; delay <= 2'b11; end
+                10'b00_00011000: begin led_r <= 8'b00111000; delay <= 2'b11; end
+                10'b00_00111000: begin led_r <= 8'b01111000; delay <= 2'b11; end
+                10'b00_01111000: begin led_r <= 8'b11111000; delay <= 2'b11; end
                 10'b00_11111000: begin
                     led_r <= 8'b00000000;
                     repetitions <= repetitions - 1;
