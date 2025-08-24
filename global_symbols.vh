@@ -1,10 +1,10 @@
 // Global symbols and constants for the Pong game
 
-`define BALL_SIZE 8
+`define BALL_SIZE 8 //in reaity 9 as we used <= instead of = for drawing, but didn't change the rest of the code, as not necessary
 `define BALL_CENTER_OFFSET 4
 `define BALL_COLOR 3'b111
 
-`define PLAYER_HEIGHT 60
+`define PLAYER_HEIGHT 59 // same as ball
 `define HALF_PLAYER_HEIGHT 30
 `define PLAYER_WIDTH 12
 
