@@ -7,7 +7,7 @@ module score_generator (
     input wire[11:0] y,                  // Current pixel y coordinate
     input wire[2:0] score,               // 3-bit score value (0-7)
     input wire[11:0] horizontal_offset,  // Horizontal offset for digit placement
-    output wire out,                     // Output: 1 if pixel is part of digit, 0 otherwise
+    output wire out                     // Output: 1 if pixel is part of digit, 0 otherwise
 );
     reg out_r;                           // Register to hold output value
     assign out = out_r;                  // Assign register to output
