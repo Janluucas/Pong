@@ -194,7 +194,11 @@ module img_generator (
         end
 
         if (!paused) begin
-            last_winner_color <= 3'b000; // reset last winner color
+            if (!miss_indicator) begin
+                last_winner_color <= 3'b000; // reset last winner color
+            end
+
+
             case (ball_direction_left)
                 0: ball_x_pos <= ball_x_pos + current_ball_x_movement;
                 1: ball_x_pos <= ball_x_pos - current_ball_x_movement;
