@@ -23,15 +23,15 @@
 
 #Pull-Ups for keypad inputs
 #keypad for player 1
-set_instance_assignment -PIN_C6 WEAK_PULL_UP_RESISTOR ON -to GPIO_015
-set_instance_assignment -PIN_D6 WEAK_PULL_UP_RESISTOR ON -to GPIO_013
-set_instance_assignment -PIN_A6 WEAK_PULL_UP_RESISTOR ON -to GPIO_011
-set_instance_assignment -PIN_D5 WEAK_PULL_UP_RESISTOR ON -to GPIO_009
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_015
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_013
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_011
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_009
 #keypad for player 2
-set_instance_assignment -PIN_A7 WEAK_PULL_UP_RESISTOR ON -to GPIO_014
-set_instance_assignment -PIN_B7 WEAK_PULL_UP_RESISTOR ON -to GPIO_012
-set_instance_assignment -PIN_B6 WEAK_PULL_UP_RESISTOR ON -to GPIO_010
-set_instance_assignment -PIN_A5 WEAK_PULL_UP_RESISTOR ON -to GPIO_008
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_014
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_012
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_010
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO_008
 
 
 # LED
@@ -62,14 +62,14 @@ set_location_assignment PIN_B3  -to GPIO_004
 set_location_assignment PIN_B4  -to GPIO_005
 set_location_assignment PIN_A4  -to GPIO_006
 set_location_assignment PIN_B5  -to GPIO_007
-#set_location_assignment PIN_A5  -to GPIO_008
-#set_location_assignment PIN_D5  -to GPIO_009
-#set_location_assignment PIN_B6  -to GPIO_010
-#set_location_assignment PIN_A6  -to GPIO_011
-#set_location_assignment PIN_B7  -to GPIO_012
-#set_location_assignment PIN_D6  -to GPIO_013
-#set_location_assignment PIN_A7  -to GPIO_014
-#set_location_assignment PIN_C6  -to GPIO_015
+set_location_assignment PIN_A5  -to GPIO_008
+set_location_assignment PIN_D5  -to GPIO_009
+set_location_assignment PIN_B6  -to GPIO_010
+set_location_assignment PIN_A6  -to GPIO_011
+set_location_assignment PIN_B7  -to GPIO_012
+set_location_assignment PIN_D6  -to GPIO_013
+set_location_assignment PIN_A7  -to GPIO_014
+set_location_assignment PIN_C6  -to GPIO_015
 set_location_assignment PIN_C8  -to GPIO_016
 set_location_assignment PIN_E6  -to GPIO_017
 set_location_assignment PIN_E7  -to GPIO_018
