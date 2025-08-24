@@ -36,7 +36,7 @@ module animation (
                 default: led_r <= 0;
             endcase
 
-        end if (goal_2_animation_triggered && (repetitions != 2'b0)) begin
+        end else if (goal_2_animation_triggered && (repetitions != 2'b0)) begin
             case (led_r)
                 8'b00000000: led_r <= 8'b00000001;
                 8'b00000001: led_r <= 8'b00000010;
@@ -92,16 +92,19 @@ module animation (
                 win_2_animation_triggered <= 0;
                 goal_1_animation_triggered <= 0;
                 goal_2_animation_triggered <= 0;
+
             end if (win_player_2) begin
                 win_1_animation_triggered <= 0;
                 win_2_animation_triggered <= 1;
                 goal_1_animation_triggered <= 0;
                 goal_2_animation_triggered <= 0;
+
             end if (goal_player_1) begin
                 win_1_animation_triggered <= 0;
                 win_2_animation_triggered <= 0;
                 goal_1_animation_triggered <= 1;
                 goal_2_animation_triggered <= 0;
+
             end if (goal_player_2) begin
                 win_1_animation_triggered <= 0;
                 win_2_animation_triggered <= 0;
