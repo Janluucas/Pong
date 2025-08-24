@@ -14,8 +14,10 @@ module img_generator (
     output wire[7:0] led
 );
     // Animation
-    wire goal_player_1, goal_player_2;
-    wire win_player_1, win_player_2;
+    reg goal_player_1 = 0;
+    reg goal_player_2 = 0;
+    reg win_player_1  = 0;
+    reg win_player_2  = 0;
     
     reg[7:0] led_r;
     assign led = led_r;
@@ -28,6 +30,11 @@ module img_generator (
         .win_player_2(win_player_2),
         .led(led_r)
     );
+
+    always @(posedge BALL_CLOCK) begin
+        win_player_1 <= last_winner_color == `PLAYER_1_COLOR;
+        win_player_2 <= last_winner_color == `PLAYER_2_COLOR;
+    end
 
     reg paused = 1;   // yes, by default the game is supposed to be paused
     reg pause_request_active_low = 1; // active low signal to request pause
@@ -200,41 +207,55 @@ module img_generator (
 
                 current_ball_x_movement <= 1;
                 current_ball_y_movement <= 3;
+
+                goal_player_2 <= 0;
             end else if (((player_1_y_pos + `HIT_ZONE_1) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_1_y_pos + `HIT_ZONE_2))) begin
                 ball_direction_left <= 0;
                 ball_direction_top <= 1;
 
                 current_ball_x_movement <= 2;
                 current_ball_y_movement <= 2;
+
+                goal_player_2 <= 0;
             end else if (((player_1_y_pos + `HIT_ZONE_2) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_1_y_pos + `HIT_ZONE_3))) begin
                 ball_direction_left <= 0;
                 ball_direction_top <= 1;
 
                 current_ball_x_movement <= 3;
                 current_ball_y_movement <= 1;
+
+                goal_player_2 <= 0;
             end else if (((player_1_y_pos + `HIT_ZONE_3) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_1_y_pos + `HIT_ZONE_4))) begin
                 ball_direction_left <= 0;
 
                 current_ball_x_movement <= 4;
                 current_ball_y_movement <= 0;
+
+                goal_player_2 <= 0;
             end else if (((player_1_y_pos + `HIT_ZONE_4) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_1_y_pos + `HIT_ZONE_5))) begin
                 ball_direction_left <= 0;
                 ball_direction_top <= 0;
 
                 current_ball_x_movement <= 3;
                 current_ball_y_movement <= 1;
+
+                goal_player_2 <= 0;
             end else if (((player_1_y_pos + `HIT_ZONE_5) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_1_y_pos + `HIT_ZONE_MAX))) begin
                 ball_direction_left <= 0;
                 ball_direction_top <= 0;
 
                 current_ball_x_movement <= 2;
                 current_ball_y_movement <= 2;
+
+                goal_player_2 <= 0;
             end else if (((player_1_y_pos + `HIT_ZONE_MAX) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_1_y_pos + `HIT_ZONE_MAX + `CORNER_HIT_ZONE_SIZE))) begin
                 ball_direction_left <= 0;
                 ball_direction_top <= 0;
 
                 current_ball_x_movement <= 1;
                 current_ball_y_movement <= 3;
+
+                goal_player_2 <= 0;
             end else begin
                 // Miss -> Player 2 scores
                 miss_indicator <= 1;
@@ -246,6 +267,7 @@ module img_generator (
                     
                 end else begin
                     score_player_2 <= score_player_2 + 1'b1;
+                    goal_player_2 <= 1;
                 end
             end
         end
@@ -259,41 +281,55 @@ module img_generator (
 
                 current_ball_x_movement <= 1;
                 current_ball_y_movement <= 3;
+
+                goal_player_1 <= 0;
             end else if (((player_2_y_pos + `HIT_ZONE_1) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_2_y_pos + `HIT_ZONE_2))) begin
                 ball_direction_left <= 1;
                 ball_direction_top <= 1;
 
                 current_ball_x_movement <= 2;
                 current_ball_y_movement <= 2;
+
+                goal_player_1 <= 0;
             end else if (((player_2_y_pos + `HIT_ZONE_2) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_2_y_pos + `HIT_ZONE_3))) begin
                 ball_direction_left <= 1;
                 ball_direction_top <= 1;
 
                 current_ball_x_movement <= 3;
                 current_ball_y_movement <= 1;
+
+                goal_player_1 <= 0;
             end else if (((player_2_y_pos + `HIT_ZONE_3) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_2_y_pos + `HIT_ZONE_4))) begin
                 ball_direction_left <= 1;
 
                 current_ball_x_movement <= 4;
                 current_ball_y_movement <= 0;
+
+                goal_player_1 <= 0;
             end else if (((player_2_y_pos + `HIT_ZONE_4) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_2_y_pos + `HIT_ZONE_5))) begin
                 ball_direction_left <= 1;
                 ball_direction_top <= 0;
 
                 current_ball_x_movement <= 3;
                 current_ball_y_movement <= 1;
+
+                goal_player_1 <= 0;
             end else if (((player_2_y_pos + `HIT_ZONE_5) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_2_y_pos + `HIT_ZONE_MAX))) begin
                 ball_direction_left <= 1;
                 ball_direction_top <= 0;
 
                 current_ball_x_movement <= 2;
                 current_ball_y_movement <= 2;
+
+                goal_player_1 <= 0;
             end else if (((player_2_y_pos + `HIT_ZONE_MAX) <= (ball_y_pos + `BALL_CENTER_OFFSET)) && ((ball_y_pos + `BALL_CENTER_OFFSET) < (player_2_y_pos + `HIT_ZONE_MAX + `CORNER_HIT_ZONE_SIZE))) begin
                 ball_direction_left <= 1;
                 ball_direction_top <= 0;
 
                 current_ball_x_movement <= 1;
                 current_ball_y_movement <= 3;
+
+                goal_player_1 <= 0;
             end else begin
                 // Miss -> Player 1 scores
                 miss_indicator <= 1;
@@ -302,9 +338,10 @@ module img_generator (
                     score_player_2 <= 0;
                     
                     last_winner_color <= `PLAYER_1_COLOR;
-
                 end else begin
                     score_player_1 <= score_player_1 + 1'b1;
+
+                    goal_player_1 <= 1;
                 end
             end
         end
