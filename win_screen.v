@@ -76,7 +76,7 @@ module win_screen (
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
                 )
-            )
+            );
 
             `PLAYER_2_COLOR: out_r <= (
                 (
@@ -138,7 +138,7 @@ module win_screen (
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
                 )
-            )
+            );
 
             default: out_r <= 0; 
         endcase
