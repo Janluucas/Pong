@@ -8,7 +8,7 @@ module win_screen (
 
     input wire[2:0] winner,
 
-    input wire out
+    output wire out
 );
     reg out_r;
     assign out = out_r;
@@ -16,8 +16,8 @@ module win_screen (
 
     always @(posedge clk) begin
         case (winner)
-            `PLAYER_1_COLOR: out_r <= (
-                (
+            `PLAYER_1_COLOR: begin
+                out_r <= (
                     // DRAW 'W'
                     (`WIN_TEXT_PLAYER_1_X_POS <= x) &&
                     (x < (`WIN_TEXT_PLAYER_1_X_POS + 4)) &&
@@ -75,11 +75,11 @@ module win_screen (
                     (x < (`WIN_TEXT_PLAYER_1_X_POS + 60)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
-                )
-            );
+                );
+            end
 
-            `PLAYER_2_COLOR: out_r <= (
-                (
+            `PLAYER_2_COLOR: begin
+                out_r <= (
                     // DRAW 'W'
                     (`WIN_TEXT_PLAYER_2_X_POS <= x) &&
                     (x < (`WIN_TEXT_PLAYER_2_X_POS + 4)) &&
@@ -137,8 +137,8 @@ module win_screen (
                     (x < (`WIN_TEXT_PLAYER_2_X_POS + 60)) &&
                     (`WIN_TEXT_Y_POS <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
-                )
-            );
+                );
+            end
 
             default: out_r <= 0; 
         endcase
