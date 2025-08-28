@@ -57,7 +57,7 @@ module keypad(
 			8'b1000_1000: keycode <= {4'd13,1'b1};	// 'D'
 
 			// To-Do: Detect key release
-			default:      keycode <= {keycode[4:1], 1'b0}; // No key pressed
+			default:      keycode <= {keycode[4:1], 1'b1}; // No key pressed (deactivated feature)
 		endcase
 	end
 
