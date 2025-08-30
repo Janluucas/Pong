@@ -40,22 +40,22 @@ module keypad(
 	// keycode-Schaltung
 	always @(posedge clk) begin
 		case ({~rows, ~cols})
-			8'b0001_0001: begin keycode <= {4'd1,~flag}; flag <= ~flag;	end// '1'
+			8'b0001_0001: begin keycode <= {4'd1,flag}; flag <= flag;	end// '1'
 			8'b0001_0010: begin keycode <= {4'd2,~flag}; flag <= ~flag;	end 	// '2'
-			8'b0001_0100: begin keycode <= {4'd3,~flag}; flag <= ~flag;	end	// '3'
-			8'b0001_1000: begin keycode <= {4'd10,~flag}; flag <= ~flag;	end	// 'A'
-			8'b0010_0001: begin keycode <= {4'd4,~flag}; flag <= ~flag;	end	// '4'
-			8'b0010_0010: begin keycode <= {4'd5,~flag}; flag <= ~flag;	end	// '5'
-			8'b0010_0100: begin keycode <= {4'd6,~flag}; flag <= ~flag;	end	// '6'
-			8'b0010_1000: begin keycode <= {4'd11,~flag}; flag <= ~flag;	end	// 'B'
-			8'b0100_0001: begin keycode <= {4'd7,~flag}; flag <= ~flag;	end	// '7'
+			8'b0001_0100: begin keycode <= {4'd3,flag}; flag <= flag;	end	// '3'
+			8'b0001_1000: begin keycode <= {4'd10,flag}; flag <= flag;	end	// 'A'
+			8'b0010_0001: begin keycode <= {4'd4,flag}; flag <= flag;	end	// '4'
+			8'b0010_0010: begin keycode <= {4'd5,flag}; flag <= flag;	end	// '5'
+			8'b0010_0100: begin keycode <= {4'd6,flag}; flag <= flag;	end	// '6'
+			8'b0010_1000: begin keycode <= {4'd11,flag}; flag <= flag;	end	// 'B'
+			8'b0100_0001: begin keycode <= {4'd7,flag}; flag <= flag;	end	// '7'
 			8'b0100_0010: begin keycode <= {4'd8,~flag}; flag <= ~flag;	end	// '8'
-			8'b0100_0100: begin keycode <= {4'd9,~flag}; flag <= ~flag;	end	// '9'
-			8'b0100_1000: begin keycode <= {4'd12,~flag}; flag <= ~flag;	end	// 'C'
-			8'b1000_0001: begin keycode <= {4'd14,~flag}; flag <= ~flag;	end	// '*'
-			8'b1000_0010: begin keycode <= {4'd0,~flag}; flag <= ~flag;	end 	// '0'
-			8'b1000_0100: begin keycode <= {4'd15,~flag}; flag <= ~flag;	end // '#'
-			8'b1000_1000: begin keycode <= {4'd13,~flag}; flag <= ~flag;	end	// 'D'
+			8'b0100_0100: begin keycode <= {4'd9,flag}; flag <= flag;	end	// '9'
+			8'b0100_1000: begin keycode <= {4'd12,flag}; flag <= flag;	end	// 'C'
+			8'b1000_0001: begin keycode <= {4'd14,flag}; flag <= flag;	end	// '*'
+			8'b1000_0010: begin keycode <= {4'd0,flag}; flag <= flag;	end 	// '0'
+			8'b1000_0100: begin keycode <= {4'd15,flag}; flag <= flag;	end // '#'
+			8'b1000_1000: begin keycode <= {4'd13,flag}; flag <= flag;	end	// 'D'
 
 			// To-Do: Detect key release
 			default:      keycode <= keycode; // No key pressed (deactivated feature)
