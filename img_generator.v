@@ -11,7 +11,9 @@ module img_generator (
     input wire key1,                 // FPGA key 1
     output wire[2:0] color,          // Output color for current pixel
 
-    output wire[7:0] led             // LED output for animation
+    output wire[7:0] led,             // LED output for animation
+    output wire flag_1,            // Player 1 movement flag
+    output wire flag_2             // Player 2 movement flag
 );
 
     // Animation state registers
@@ -72,8 +74,10 @@ module img_generator (
     // Player positions
     reg[11:0] player_1_y_pos = `INITIAL_PLAYER_Y_POS;
     reg[11:0] player_2_y_pos = `INITIAL_PLAYER_Y_POS;
-    reg flag_1 = 0;
-    reg flag_2 = 0;
+    reg flag_1_r = 0;
+    reg flag_2_r = 0;
+    assign flag_1 = flag_1_r;
+    assign flag_2 = flag_2_r;
 
     always @(posedge BALL_CLOCK) begin
         if (reset) begin // Reset player positions if reset is triggered
@@ -84,7 +88,7 @@ module img_generator (
         if (!paused) begin //deactivate movement if paused
             // Player 1 movement
             if (keys_1[4:1] == {4'd2}) begin // Up
-                flag_1 <= ~flag_1;
+                flag_1_r <= ~flag_1_r;
                 if (player_1_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_1_y_pos <= 1;
                 end else begin
@@ -92,7 +96,7 @@ module img_generator (
                 end
             end
             else if (keys_1[4:1] == {4'd8}) begin // Down
-                flag_1 <= ~flag_1;
+                flag_1_r <= ~flag_1_r;
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_1_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_1_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin
@@ -102,7 +106,7 @@ module img_generator (
 
             // Player 2 movement
             if (keys_2[4:1] == {4'd2}) begin // Up
-                flag_2 <= ~flag_2;
+                flag_1_r <= ~flag_1_r;
                 if (player_2_y_pos <= `DEFAULT_PLAYER_SPEED) begin // Boundary check
                     player_2_y_pos <= 1;
                 end else begin
@@ -110,7 +114,7 @@ module img_generator (
                 end
             end
             else if (keys_2[4:1] == {4'd8}) begin // Down
-                flag_2 <= ~flag_2;
+                flag_1_r <= ~flag_1_r;
                 if ((`FRAME_HEIGHT - `DEFAULT_PLAYER_SPEED) <= (player_2_y_pos + `PLAYER_HEIGHT)) begin // Boundary check
                     player_2_y_pos <= `FRAME_HEIGHT - `PLAYER_HEIGHT - 1;
                 end else begin

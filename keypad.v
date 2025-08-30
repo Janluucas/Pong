@@ -1,6 +1,7 @@
 module keypad(
     input  wire       clk,
     input  wire [3:0] cols,
+	input wire flag_in, // Input flag for key press detection
     output reg  [3:0] rows,
     output reg  [4:0] keycode
 );
@@ -39,23 +40,23 @@ module keypad(
 	// mittels kombinatorische Multiplexer- und sequentieller
 	// keycode-Schaltung
 	always @(posedge clk) begin
-		case ({~rows, ~cols})
-			8'b0001_0001: begin keycode <= {4'd1,flag}; flag <= flag;	end// '1'
-			8'b0001_0010: begin keycode <= {4'd2,~flag}; flag <= ~flag;	end 	// '2'
-			8'b0001_0100: begin keycode <= {4'd3,flag}; flag <= flag;	end	// '3'
-			8'b0001_1000: begin keycode <= {4'd10,flag}; flag <= flag;	end	// 'A'
-			8'b0010_0001: begin keycode <= {4'd4,flag}; flag <= flag;	end	// '4'
-			8'b0010_0010: begin keycode <= {4'd5,flag}; flag <= flag;	end	// '5'
-			8'b0010_0100: begin keycode <= {4'd6,flag}; flag <= flag;	end	// '6'
-			8'b0010_1000: begin keycode <= {4'd11,flag}; flag <= flag;	end	// 'B'
-			8'b0100_0001: begin keycode <= {4'd7,flag}; flag <= flag;	end	// '7'
-			8'b0100_0010: begin keycode <= {4'd8,~flag}; flag <= ~flag;	end	// '8'
-			8'b0100_0100: begin keycode <= {4'd9,flag}; flag <= flag;	end	// '9'
-			8'b0100_1000: begin keycode <= {4'd12,flag}; flag <= flag;	end	// 'C'
-			8'b1000_0001: begin keycode <= {4'd14,flag}; flag <= flag;	end	// '*'
-			8'b1000_0010: begin keycode <= {4'd0,flag}; flag <= flag;	end 	// '0'
-			8'b1000_0100: begin keycode <= {4'd15,flag}; flag <= flag;	end // '#'
-			8'b1000_1000: begin keycode <= {4'd13,flag}; flag <= flag;	end	// 'D'
+		case ({~rows, ~cols, flag_in})
+			9'b0001_0001_0: begin keycode <= {4'd1,flag_in}; flag <= flag;	end	// '1'
+			9'b0001_0010_0: begin keycode <= {4'd2,flag_in}; flag <= ~flag;	end // '2'
+			9'b0001_0100_0: begin keycode <= {4'd3,flag_in}; flag <= flag;	end	// '3'
+			9'b0001_1000_0: begin keycode <= {4'd10,flag_in}; flag <= flag;	end	// 'A'
+			9'b0010_0001_0: begin keycode <= {4'd4,flag_in}; flag <= flag;	end	// '4'
+			9'b0010_0010_0: begin keycode <= {4'd5,flag_in}; flag <= flag;	end	// '5'
+			9'b0010_0100_0: begin keycode <= {4'd6,flag_in}; flag <= flag;	end	// '6'
+			9'b0010_1000_0: begin keycode <= {4'd11,flag_in}; flag <= flag;	end	// 'B'
+			9'b0100_0001_0: begin keycode <= {4'd7,flag_in}; flag <= flag;	end	// '7'
+			9'b0100_0010_0: begin keycode <= {4'd8,flag_in}; flag <= ~flag;	end	// '8'
+			9'b0100_0100_0: begin keycode <= {4'd9,flag_in}; flag <= flag;	end	// '9'
+			9'b0100_1000_0: begin keycode <= {4'd12,flag_in}; flag <= flag;	end	// 'C'
+			9'b1000_0001_0: begin keycode <= {4'd14,flag_in}; flag <= flag;	end	// '*'
+			9'b1000_0010_0: begin keycode <= {4'd0,flag_in}; flag <= flag;	end // '0'
+			9'b1000_0100_0: begin keycode <= {4'd15,flag_in}; flag <= flag;	end // '#'
+			9'b1000_1000_0: begin keycode <= {4'd13,flag_in}; flag <= flag;	end	// 'D'
 
 			// To-Do: Detect key release
 			default:      keycode <= keycode; // No key pressed (deactivated feature)

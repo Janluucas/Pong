@@ -67,6 +67,8 @@ module vga(
   input wire [4:0]  keys_2, // Player 2 inputs
   input wire key0,
   input wire key1,
+  output wire flag_1,
+  output wire flag_2,
 
   // For Animation
   output wire[7:0] led
@@ -112,6 +114,8 @@ module vga(
     .keys_2(keys_2),
     .key0(key0),
     .key1(key1),
+    .flag_1(flag_1),
+    .flag_2(flag_2),
     
     .led(led_r)
   );
