@@ -23,6 +23,7 @@ module keypad(
 	// auf 0 gezogen.
 	reg [1:0] row_sel = 2'd0;
 	reg [9:0] cnt = 0;		// Debounce-Timer
+	reg flag = 1'b0;		// Tastendruck-Flag
 
 	always @(posedge clk) begin
 		cnt <= cnt + 1;
@@ -39,25 +40,25 @@ module keypad(
 	// keycode-Schaltung
 	always @(posedge clk) begin
 		case ({~rows, ~cols})
-			8'b0001_0001: keycode <= {4'd1,1'b1};	// '1'
-			8'b0001_0010: keycode <= {4'd2,1'b1}; 	// '2'
-			8'b0001_0100: keycode <= {4'd3,1'b1};	// '3'
-			8'b0001_1000: keycode <= {4'd10,1'b1};	// 'A'
-			8'b0010_0001: keycode <= {4'd4,1'b1};	// '4'
-			8'b0010_0010: keycode <= {4'd5,1'b1};	// '5'
-			8'b0010_0100: keycode <= {4'd6,1'b1};	// '6'
-			8'b0010_1000: keycode <= {4'd11,1'b1};	// 'B'
-			8'b0100_0001: keycode <= {4'd7,1'b1};	// '7'
-			8'b0100_0010: keycode <= {4'd8,1'b1};	// '8'
-			8'b0100_0100: keycode <= {4'd9,1'b1};	// '9'
-			8'b0100_1000: keycode <= {4'd12,1'b1};	// 'C'
-			8'b1000_0001: keycode <= {4'd14,1'b1};	// '*'
-			8'b1000_0010: keycode <= {4'd0,1'b1}; 	// '0'
-			8'b1000_0100: keycode <= {4'd15,1'b1}; // '#'
-			8'b1000_1000: keycode <= {4'd13,1'b1};	// 'D'
+			8'b0001_0001: begin keycode <= {4'd1,~flag}; flag <= ~flag;	end// '1'
+			8'b0001_0010: begin keycode <= {4'd2,~flag}; flag <= ~flag;	end 	// '2'
+			8'b0001_0100: begin keycode <= {4'd3,~flag}; flag <= ~flag;	end	// '3'
+			8'b0001_1000: begin keycode <= {4'd10,~flag}; flag <= ~flag;	end	// 'A'
+			8'b0010_0001: begin keycode <= {4'd4,~flag}; flag <= ~flag;	end	// '4'
+			8'b0010_0010: begin keycode <= {4'd5,~flag}; flag <= ~flag;	end	// '5'
+			8'b0010_0100: begin keycode <= {4'd6,~flag}; flag <= ~flag;	end	// '6'
+			8'b0010_1000: begin keycode <= {4'd11,~flag}; flag <= ~flag;	end	// 'B'
+			8'b0100_0001: begin keycode <= {4'd7,~flag}; flag <= ~flag;	end	// '7'
+			8'b0100_0010: begin keycode <= {4'd8,~flag}; flag <= ~flag;	end	// '8'
+			8'b0100_0100: begin keycode <= {4'd9,~flag}; flag <= ~flag;	end	// '9'
+			8'b0100_1000: begin keycode <= {4'd12,~flag}; flag <= ~flag;	end	// 'C'
+			8'b1000_0001: begin keycode <= {4'd14,~flag}; flag <= ~flag;	end	// '*'
+			8'b1000_0010: begin keycode <= {4'd0,~flag}; flag <= ~flag;	end 	// '0'
+			8'b1000_0100: begin keycode <= {4'd15,~flag}; flag <= ~flag;	end // '#'
+			8'b1000_1000: begin keycode <= {4'd13,~flag}; flag <= ~flag;	end	// 'D'
 
 			// To-Do: Detect key release
-			default:      keycode <= {keycode[4:1], 1'b1}; // No key pressed (deactivated feature)
+			default:      keycode <= keycode; // No key pressed (deactivated feature)
 		endcase
 	end
 
