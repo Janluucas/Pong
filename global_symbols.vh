@@ -4,7 +4,7 @@
 `define BALL_CENTER_OFFSET 4
 `define BALL_COLOR 3'b111
 
-`define PLAYER_HEIGHT 59 // same as ball
+`define PLAYER_HEIGHT 60
 `define HALF_PLAYER_HEIGHT 30
 `define PLAYER_WIDTH 12
 
