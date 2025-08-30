@@ -35,7 +35,7 @@ module win_screen (
                     (y < (`WIN_TEXT_Y_POS + 24))
                 ) || (
                     ((`WIN_TEXT_PLAYER_1_X_POS + 16) <= x) &&
-                    (x < (`WIN_TEXT_PLAYER_1_X_POS + 20)) &&
+                    (x < (`WIN_TEXT_PLAYER_1_X_POS + 24)) &&
                     ((`WIN_TEXT_Y_POS + 24) <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
                 ) || (
@@ -95,7 +95,7 @@ module win_screen (
                     (y < (`WIN_TEXT_Y_POS + 24))
                 ) || (
                     ((`WIN_TEXT_PLAYER_2_X_POS + 16) <= x) &&
-                    (x < (`WIN_TEXT_PLAYER_2_X_POS + 20)) &&
+                    (x < (`WIN_TEXT_PLAYER_2_X_POS + 24)) &&
                     ((`WIN_TEXT_Y_POS + 24) <= y) &&
                     (y < (`WIN_TEXT_Y_POS + 28))
                 ) || (
